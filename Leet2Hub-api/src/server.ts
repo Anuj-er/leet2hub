@@ -12,6 +12,9 @@ const app = express()
 app.use(cors())
 app.options('*', cors())
 
+// Trust the reverse proxy (Vercel) so rate limiting works correctly per-IP
+app.set('trust proxy', 1)
+
 // Implement rate limiting to prevent abuse
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
