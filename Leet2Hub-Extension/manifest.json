@@ -1,0 +1,41 @@
+{
+	"manifest_version": 3,
+	"name": "Leet2Hub",
+	"version": "1.0.0",
+	"description": "Effortlessly capture and push LeetCode solutions (with AI explanations!) to your GitHub repository",
+	"action": {
+		"default_popup": "dist/index.html",
+		"default_icon": {
+			"16": "images/favicon-16x16.png",
+			"32": "images/favicon-32x32.png",
+			"192": "images/android-chrome-192x192.png",
+			"512": "images/android-chrome-512x512.png"
+		}
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://*.leetcode.com/*"
+			],
+			"js": [
+				"content-script.js"
+			],
+			"css": [
+				"style.css"
+			]
+		}
+	],
+	"permissions": [
+		"storage"
+	],
+	"host_permissions": [
+		"https://*.leetcode.com/*",
+		"https://api.github.com/*"
+	],
+	"icons": {
+		"16": "images/favicon-16x16.png",
+		"32": "images/favicon-32x32.png",
+		"192": "images/android-chrome-192x192.png",
+		"512": "images/android-chrome-512x512.png"
+	}
+}
