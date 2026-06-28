@@ -10,7 +10,6 @@ dotenv.config()
 const app = express()
 
 app.use(cors())
-app.options('*', cors())
 
 // Trust the reverse proxy (Vercel) so rate limiting works correctly per-IP
 app.set('trust proxy', 1)
