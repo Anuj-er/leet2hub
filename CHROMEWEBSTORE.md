@@ -66,6 +66,9 @@ English
 | storage | permissions | Required to securely save the user's GitHub repository URL, Personal Access Token, and Gemini API key locally on their device so they do not have to enter them for every submission. |
 | https://*.leetcode.com/* | host_permissions | Required to inject the "Push" button onto LeetCode problem pages, read the accepted solution code, and fetch problem tags using the LeetCode GraphQL API for automatic folder categorization. |
 | https://api.github.com/* | host_permissions | Required to authenticate with GitHub and commit the user's solution code and generated README directly to their designated GitHub repository via the GitHub REST API. |
+| https://generativelanguage.googleapis.com/* | host_permissions | Required to generate AI explanations for the LeetCode solutions using the Google Gemini API. |
+| https://api.groq.com/* | host_permissions | Required as a fallback to generate AI explanations for the LeetCode solutions using the Groq API. |
+| https://leet2hub.vercel.app/* | host_permissions | Required to fetch user performance stats and streak calendar data from the custom Leet2Hub backend for display in the popup. |
 
 ## Privacy & Data Use
 

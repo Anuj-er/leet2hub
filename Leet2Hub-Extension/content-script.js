@@ -60,6 +60,39 @@
   // Platform detection
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform)
 
+  // Proxy fetch through background script to bypass CSP
+  async function fetchViaProxy(url, options = {}) {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        { action: "fetchProxy", url, options },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            return reject(new Error(chrome.runtime.lastError.message));
+          }
+          if (response && response.error) {
+            return reject(new Error(response.error));
+          }
+          resolve({
+            ok: response.ok,
+            status: response.status,
+            headers: {
+              get: (name) => response.headers[name] || response.headers[name.toLowerCase()]
+            },
+            json: async () => {
+              if (typeof response.body === 'string') {
+                try { return JSON.parse(response.body); } catch(e) { return response.body; }
+              }
+              return response.body;
+            },
+            text: async () => {
+              if (typeof response.body === 'string') return response.body;
+              return JSON.stringify(response.body);
+            }
+          });
+        }
+      );
+    });
+  }
 
   // Storage helpers
   function storageGet(keys) {
@@ -1050,7 +1083,7 @@
       // 3.5. Determine default branch dynamically
       let targetBranch = config.branch;
       try {
-        const repoInfoRes = await fetch(`${BASE_URL}/${userName}/${repoName}`, {
+        const repoInfoRes = await fetchViaProxy(`${BASE_URL}/${userName}/${repoName}`, {
           headers: { Authorization: `Bearer ${config.token}` }
         });
         if (repoInfoRes.ok) {
@@ -1111,7 +1144,7 @@
 
     try {
       // Check if repo exists
-      const repoCheckResponse = await fetch(`${BASE_URL}/${userName}/${repoName}`, {
+      const repoCheckResponse = await fetchViaProxy(`${BASE_URL}/${userName}/${repoName}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -1149,7 +1182,7 @@
       // Check if file exists and get the latest SHA
       let fileExistsRes
       try {
-        fileExistsRes = await fetch(`${apiUrl}?ref=${branch}`, {
+        fileExistsRes = await fetchViaProxy(`${apiUrl}?ref=${branch}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -1188,7 +1221,7 @@
       }
 
       // Make the API call to push the file
-      let response = await fetch(apiUrl, {
+      let response = await fetchViaProxy(apiUrl, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -1210,7 +1243,7 @@
 
         try {
           // Get the latest SHA again
-          const latestShaRes = await fetch(`${apiUrl}?ref=${branch}`, {
+          const latestShaRes = await fetchViaProxy(`${apiUrl}?ref=${branch}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -1228,7 +1261,7 @@
             console.log(`Using updated SHA on retry ${retryCount}: ${latestFileData.sha}`)
 
             // Retry the request with the updated SHA
-            response = await fetch(apiUrl, {
+            response = await fetchViaProxy(apiUrl, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
@@ -1281,7 +1314,7 @@
     const description = "This repository is managed by Leet2Hub extension"
 
     try {
-      await fetch(`${BASE_URL}/${userName}/${repoName}`, {
+      await fetchViaProxy(`${BASE_URL}/${userName}/${repoName}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -1295,7 +1328,7 @@
   }
 
   async function getDailyChallenge() {
-    const response = await fetch("https://leetcode.com/graphql", {
+    const response = await fetchViaProxy("https://leetcode.com/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1330,7 +1363,7 @@
       }
     `;
     try {
-      const response = await fetch("https://leetcode.com/graphql", {
+      const response = await fetchViaProxy("https://leetcode.com/graphql", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, variables: { titleSlug } }),
@@ -1405,7 +1438,7 @@ ${customPrompt ? `\nUser's custom instructions for the explanation:\n${customPro
 
     try {
       if (aiProvider === "groq") {
-        const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
+        const response = await fetchViaProxy(`https://api.groq.com/openai/v1/chat/completions`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${apiKey}`,
@@ -1420,7 +1453,7 @@ ${customPrompt ? `\nUser's custom instructions for the explanation:\n${customPro
         if (data.error) throw new Error(data.error.message);
         return data.choices?.[0]?.message?.content || "Failed to generate explanation.";
       } else {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
