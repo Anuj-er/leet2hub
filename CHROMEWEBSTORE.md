@@ -81,12 +81,12 @@ English
 | Personally identifiable info | No | No | | No |
 | Health info | No | No | | No |
 | Financial info | No | No | | No |
-| Authentication info | Yes | Yes | Used to authenticate API calls to GitHub and Gemini. Transmitted ONLY to github.com and Google Gemini APIs directly. | No |
+| Authentication info | Yes | Yes | Used to authenticate API calls to GitHub, Gemini, and Groq. Transmitted ONLY to github.com, Google, and Groq APIs directly. | No |
 | Personal communications | No | No | | No |
 | Location | No | No | | No |
 | Web history | No | No | | No |
 | User activity | No | No | | No |
-| Website content | Yes | Yes | Reads LeetCode solutions to push them to GitHub and optionally sends code to Gemini API to generate an explanation. | No |
+| Website content | Yes | Yes | Reads LeetCode solutions to push them to GitHub and optionally sends code to Gemini or Groq API to generate an explanation. Also fetches user stats from Leet2Hub backend. | No |
 
 ### Data Use Certification
 - [x] Data is NOT sold to third parties
