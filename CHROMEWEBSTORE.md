@@ -45,18 +45,19 @@ English
 | Asset | Dimensions | Status | Filename |
 |-------|-----------|--------|----------|
 | Store Icon [REQUIRED] | 128×128 PNG | ✅ Ready | `store_assets/store_icon_128x128.png` |
-| Screenshot 1 [REQUIRED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot1.png` |
+| Screenshot 1 [REQUIRED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot1.png` (Banner) |
 | Screenshot 2 [RECOMMENDED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot2.png` |
 | Screenshot 3 [RECOMMENDED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot3.png` |
-| Screenshot 4 | 1280×800 or 640×400 | ⬜ Not created | |
+| Screenshot 4 | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot4.png` |
 | Screenshot 5 | 1280×800 or 640×400 | ⬜ Not created | |
 | Small Promo Tile [RECOMMENDED] | 440×280 | ✅ Ready | `store_assets/small_promo.png` |
 | Marquee Promo Tile | 1400×560 | ✅ Ready | `store_assets/marquee_promo.png` |
 
 ### Screenshot Notes
-- Screenshot 1: Show the LeetCode interface with a successful submission and the golden "Push" button injected by the extension.
-- Screenshot 2: Show the popup configuration modal (glassmorphism UI) where users enter their GitHub and Gemini tokens.
-- Screenshot 3: Show the resulting GitHub repository structure and AI-generated README for a pushed solution.
+- Screenshot 1: Banner / Hero Image showcasing the extension.
+- Screenshot 2: Show the LeetCode interface with a successful submission and the golden "Push" button injected by the extension.
+- Screenshot 3: Show the popup configuration modal (glassmorphism UI) where users enter their GitHub and Gemini tokens.
+- Screenshot 4: Show the resulting GitHub repository structure and AI-generated README for a pushed solution.
 
 
 ## Permissions Justification
