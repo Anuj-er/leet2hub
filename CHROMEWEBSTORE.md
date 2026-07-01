@@ -45,13 +45,13 @@ English
 | Asset | Dimensions | Status | Filename |
 |-------|-----------|--------|----------|
 | Store Icon [REQUIRED] | 128×128 PNG | ✅ Ready | `store_assets/store_icon_128x128.png` |
-| Screenshot 1 [REQUIRED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot1.png` (Banner) |
-| Screenshot 2 [RECOMMENDED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot2.png` |
-| Screenshot 3 [RECOMMENDED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot3.png` |
-| Screenshot 4 | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot4.png` |
+| Screenshot 1 [REQUIRED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot1.jpg` (Banner) |
+| Screenshot 2 [RECOMMENDED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot2.jpg` |
+| Screenshot 3 [RECOMMENDED] | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot3.jpg` |
+| Screenshot 4 | 1280×800 or 640×400 | ✅ Ready | `screenshots/screenshot4.jpg` |
 | Screenshot 5 | 1280×800 or 640×400 | ⬜ Not created | |
-| Small Promo Tile [RECOMMENDED] | 440×280 | ✅ Ready | `store_assets/small_promo.png` |
-| Marquee Promo Tile | 1400×560 | ✅ Ready | `store_assets/marquee_promo.png` |
+| Small Promo Tile [RECOMMENDED] | 440×280 | ✅ Ready | `store_assets/small_promo.jpg` |
+| Marquee Promo Tile | 1400×560 | ✅ Ready | `store_assets/marquee_promo.jpg` |
 
 ### Screenshot Notes
 - Screenshot 1: Banner / Hero Image showcasing the extension.
