@@ -2,14 +2,12 @@
   <img src="banner.png" alt="Leet2Hub Banner" width="100%" />
 </div>
 
-<h1 align="center">Leet2Hub 🚀</h1>
-
 <p align="center">
   <b>A powerful, fully-automated ecosystem designed to seamlessly sync your LeetCode progress to GitHub, augmented by next-generation AI explanations.</b>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.0.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Extension">
   <img src="https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini AI">
