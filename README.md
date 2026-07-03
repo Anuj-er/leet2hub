@@ -9,7 +9,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.0.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  <img src="https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Extension">
+  <a href="https://chromewebstore.google.com/detail/hnopmaolpcoaghfeholbldmppipopfkk"><img src="https://img.shields.io/badge/Available_on-Chrome_Web_Store-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Web Store"></a>
   <img src="https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini AI">
 </p>
 
@@ -77,12 +77,8 @@ graph TD
 
 ## 🚀 Installation & Setup
 
-1.  **Clone or Download**: Clone this repository to your local machine:
-    ```bash
-    git clone https://github.com/anuj-er/Leet2Hub.git
-    ```
-2.  **Load Unpacked Extension**: Open `chrome://extensions/` in Google Chrome, enable **Developer mode** in the top right corner, and click **Load unpacked**. Select the `Leet2Hub-Extension` directory.
-3.  **Configure GitHub**: Pin the extension to your toolbar and open any LeetCode problem. The Leet2Hub configuration modal will appear.
+1.  **Install via Chrome Web Store**: [Download Leet2Hub directly from the Chrome Web Store!](https://chromewebstore.google.com/detail/hnopmaolpcoaghfeholbldmppipopfkk)
+2.  **Configure GitHub**: Pin the extension to your toolbar and open any LeetCode problem. The Leet2Hub configuration modal will appear.
 4.  **Enter Credentials**: 
     *   **GitHub Repository URL**: Link to your target repository (e.g., `https://github.com/anuj-er/LeetCode-Solutions`).
     *   **Personal Access Token**: A Classic token with the `repo` scope.
