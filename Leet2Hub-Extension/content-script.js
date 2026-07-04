@@ -160,7 +160,81 @@
   }
 
   // Main initialization
-  document.addEventListener("DOMContentLoaded", initLeet2Hub)
+  function runInit() {
+    initLeet2Hub();
+    initializePreferences();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", runInit);
+  } else {
+    runInit();
+  }
+
+  async function initializePreferences() {
+    const { "hide-premium-icons": hideIcons } = await storageGet(["hide-premium-icons"]);
+    applyPreferences(!!hideIcons);
+  }
+
+  function applyPreferences(hideIcons) {
+    const styleId = "leet2hub-preferences-style";
+    let styleEl = document.getElementById(styleId);
+    
+    if (hideIcons) {
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = styleId;
+        // Target common Premium and Debugger selectors
+        styleEl.textContent = `
+          /* Premium link next to profile */
+          a[href*="/subscribe"],
+          div:has(> a[href*="/subscribe"]),
+          .lc-lg\\:inline-block:has(a[href*="/subscribe"]),
+          
+          /* The exact wrapper for the Premium button */
+          div:has(> a > span > span.text-brand-orange) {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+          }
+          
+          /* Premium lock icons & orange upsell text */
+          svg.text-brand-orange,
+          .text-brand-orange {
+            display: none !important;
+          }
+          
+          /* Debugger button on the left sidebar & any premium-locked clickable container */
+          div.cursor-pointer:has(svg.text-brand-orange),
+          div.group.cursor-pointer:has(svg.text-brand-orange),
+          div.cursor-pointer:has(> div > svg.text-brand-orange),
+          button[aria-label*="debugger" i],
+          div:has(> button[aria-label*="debugger" i]) {
+             display: none !important;
+             visibility: hidden !important;
+             opacity: 0 !important;
+             pointer-events: none !important;
+             width: 0 !important;
+             height: 0 !important;
+          }
+        `;
+        document.head.appendChild(styleEl);
+      }
+    } else {
+      if (styleEl) {
+        styleEl.remove();
+      }
+    }
+  }
+
+  // Listen for preference changes from the popup
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === "local" && changes["hide-premium-icons"] !== undefined) {
+      applyPreferences(changes["hide-premium-icons"].newValue);
+    }
+  });
 
   async function initLeet2Hub() {
     // Only run on submission pages with accepted solutions

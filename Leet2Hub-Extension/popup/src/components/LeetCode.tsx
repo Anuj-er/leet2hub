@@ -4,8 +4,7 @@ import Spinner from "@/components/ui/Spinner.tsx";
 import Stats from "@/components/Stats.tsx";
 import Streak from "@/components/Streak.tsx";
 import ConfigureGithubButton from "@/components/ConfigureGithubButton.tsx";
-import ResetGithubButton from "@/components/ResetGithubButton.tsx";
-
+import SettingsView from "@/components/SettingsView.tsx";
 import {
   DailyProblemI,
   UserStatsI,
@@ -17,7 +16,12 @@ import { useDailyProblem } from "@/hooks/tanstack/queries/useDailyProblem";
 import { useUserStats } from "@/hooks/tanstack/mutations/useUserStats";
 import { useUserStreak } from "@/hooks/tanstack/mutations/useUserStreak";
 
-export default function LeetCode() {
+interface LeetCodeProps {
+  view: 'dashboard' | 'settings';
+  setView: (view: 'dashboard' | 'settings') => void;
+}
+
+export default function LeetCode({ view, setView }: LeetCodeProps) {
   const { username } = useContext(UserContext);
   const [isGithubConfigured, setIsGithubConfigured] = useState(true); // Default true to avoid flash
 
@@ -65,11 +69,26 @@ export default function LeetCode() {
       ) : (
         <div className="space-y-4">
           {!isGithubConfigured && <ConfigureGithubButton />}
-          <Welcome username={username} totalProblems={totalProblems} />
-          <Stats data={userStatsData ?? ({} as UserStatsI)} />
-          <Streak data={userStreakData ?? ({} as UserStreakI)} />
-          <Daily data={dailyProblemData ?? ({} as DailyProblemI)} />
-          {isGithubConfigured && <ResetGithubButton onReset={() => setIsGithubConfigured(false)} />}
+          
+          {view === 'settings' ? (
+            <SettingsView 
+              onBack={() => setView('dashboard')}
+              onReset={() => {
+                setIsGithubConfigured(false);
+                setView('dashboard');
+              }} 
+            />
+          ) : (
+            <>
+              <Welcome 
+                username={username} 
+                totalProblems={totalProblems} 
+              />
+              <Stats data={userStatsData ?? ({} as UserStatsI)} />
+              <Streak data={userStreakData ?? ({} as UserStreakI)} />
+              <Daily data={dailyProblemData ?? ({} as DailyProblemI)} />
+            </>
+          )}
         </div>
       )}
     </div>

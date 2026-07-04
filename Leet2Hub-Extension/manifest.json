@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Leet2Hub",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "Effortlessly capture and push LeetCode solutions (with AI explanations!) to your GitHub repository",
 	"action": {
 		"default_popup": "dist/index.html",
