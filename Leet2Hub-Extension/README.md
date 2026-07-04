@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.1.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Extension">
   <img src="https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini AI">
@@ -54,14 +54,17 @@ sequenceDiagram
 
 ## 🚀 Installation & Setup
 
-1.  **Clone or Download**: Download this repository to your local machine.
-2.  **Load Unpacked Extension**: Open `chrome://extensions/` in Google Chrome, enable **Developer mode** in the top right, and click **Load unpacked**. Select the `Leet2Hub-Extension` folder.
-3.  **Configure GitHub**: Pin the extension to your toolbar and open any LeetCode problem. The Leet2Hub configuration modal will pop up.
+1.  **Clone or Download**: Download this repository and extract the ZIP file.
+2.  **Load Unpacked Extension**: Open `chrome://extensions/` in Google Chrome, enable **Developer mode** in the top right, and click **Load unpacked**. Select the extracted `Leet2Hub-Extension` folder.
+3.  **Launch Configuration**: Pin the extension to your toolbar. Click the extension icon and hit the big orange **Configure GitHub Integration** button. You can also configure it by opening a LeetCode problem and clicking the **Configure** button where the Push button normally sits.
 4.  **Enter Credentials**: 
-    *   **GitHub Repository URL**: Link to your target repository.
-    *   **Personal Access Token**: A Classic token with `repo` scopes.
-5.  **Configure AI (Optional)**: Paste your **Google Gemini API Key** and toggle "Generate AI Explanation" to **yes**.
-6.  **Push!**: Solve a problem on LeetCode, wait for the green "Accepted" text, and click the golden **Push** button (or press your configured shortcut).
+    *   **GitHub Repository URL**: Link to your target repository (e.g., `https://github.com/username/repository`).
+    *   **Personal Access Token**: A Classic token with `repo` and `workflow` scopes.
+5.  **Configure AI (Optional)**: Paste your **Google Gemini API Key** and toggle "Generate AI Explanation" to **yes** to get automatic AI READMEs.
+6.  **Verify & Save**: Click **Save & Close**. Leet2Hub will automatically verify your credentials in the background before saving!
+7.  **Push!**: Solve a problem on LeetCode, wait for the green "Accepted" text, and click the golden **Push** button (or press your configured shortcut).
+
+> **Note:** If you ever need to change your settings, open the extension popup and click the **Reset GitHub Configuration** button at the bottom!
 
 ---
 

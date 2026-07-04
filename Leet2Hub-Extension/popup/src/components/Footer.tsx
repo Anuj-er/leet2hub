@@ -1,3 +1,5 @@
+import pkg from "../../package.json";
+
 export default function Footer() {
   return (
     <footer className="flex items-center justify-between mt-2 pt-3 border-t border-white/10">
@@ -8,7 +10,7 @@ export default function Footer() {
         </span>
       </p>
 
-      <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-full border border-white/5">v1.0.0</span>
+      <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-full border border-white/5">v{pkg.version}</span>
     </footer>
   );
 }

@@ -162,10 +162,12 @@
   // Main initialization
   document.addEventListener("DOMContentLoaded", initLeet2Hub)
 
-  function initLeet2Hub() {
+  async function initLeet2Hub() {
     // Only run on submission pages with accepted solutions
     if (isSubmissionPage() && hasAcceptedSolution()) {
-      injectButtons()
+      const config = await getGithubConfig()
+      const isConfigured = isConfigComplete(config)
+      injectButtons(isConfigured)
       extractProblemInfo()
       registerKeyboardShortcut()
     }
@@ -212,9 +214,12 @@
   }
 
   // Button injection
-  function injectButtons() {
+  function injectButtons(isConfigured = true) {
     const parentDiv = document.querySelector(SELECTORS.parentDiv)
     const parentDivCodeEditor = document.querySelector(SELECTORS.parentDivCodeEditor)
+    
+    const buttonText = isConfigured ? "Push" : "Configure"
+    const buttonTooltip = isConfigured ? `Push (${SHORTCUT_DISPLAY})` : "Configure GitHub Integration"
 
     if (parentDiv) {
       injectButtonsToParent(
@@ -224,10 +229,11 @@
         "",
         "leet2hub-div",
         "leet2hub-btn",
-        "Push",
+        buttonText,
         false,
         "Settings",
-        `Push (${SHORTCUT_DISPLAY})`
+        buttonTooltip,
+        isConfigured
       )
     }
 
@@ -239,10 +245,11 @@
         "",
         "leet2hub-div-CodeEditor",
         "leet2hub-btn-CodeEditor",
-        "Push",
+        buttonText,
         true,
         "Settings",
-        `Push (${SHORTCUT_DISPLAY})`
+        buttonTooltip,
+        isConfigured
       )
     }
   }
@@ -257,7 +264,8 @@
     pushText,
     isCodeEditor,
     editTooltip = "",
-    pushTooltip = ""
+    pushTooltip = "",
+    isConfigured = true
   ) {
     // Don't inject if already present
     if (document.getElementById(editContainerId) || document.getElementById(pushContainerId)) {
@@ -268,6 +276,10 @@
       await storageRemove(["repo", "token"]);
       handlePushClick();
     }, editTooltip)
+
+    if (!isConfigured) {
+      editButton.style.display = "none";
+    }
 
     const pushButton = createButton(pushContainerId, pushButtonId, pushText, handlePushClick, pushTooltip)
 
@@ -280,14 +292,19 @@
       divider1.style.height = "100%"
       divider1.style.flexShrink = "0"
 
+      parent.appendChild(divider1)
+      parent.appendChild(pushButton)
+      
       const divider2 = document.createElement("div")
+      divider2.id = editContainerId + "-divider"
       divider2.style.backgroundColor = "#0f0f0f"
       divider2.style.width = "1px"
       divider2.style.height = "100%"
       divider2.style.flexShrink = "0"
+      if (!isConfigured) {
+        divider2.style.display = "none";
+      }
 
-      parent.appendChild(divider1)
-      parent.appendChild(pushButton)
       parent.appendChild(divider2)
       parent.appendChild(editButton)
     } else {
@@ -504,14 +521,21 @@
          }
       }
 
-      // Legacy fallback: Grab the largest pre > code block
+      // Legacy fallback: Grab the largest code block that doesn't look like a testcase
       if (!solution) {
-        const codeElements = Array.from(document.querySelectorAll('pre > code, code'));
+        const codeElements = Array.from(document.querySelectorAll('pre > code, code, .view-lines'));
         if (codeElements.length > 0) {
            let longestCode = "";
            for (const el of codeElements) {
-              if (el.textContent.length > longestCode.length) {
-                 longestCode = el.textContent;
+              const text = el.textContent || "";
+              
+              // Filter out pure test case blocks by checking for common programming keywords.
+              // Test cases consist of numbers, brackets, booleans, and strings, but lack keywords.
+              const hasCodeKeywords = /\b(class|def|function|return|import|public|private|protected|var|let|const|int|string|boolean|if|for|while|include|namespace|impl|func|select|update|delete)\b/i.test(text);
+              const isTestCase = !hasCodeKeywords;
+              
+              if (!isTestCase && text.length > longestCode.length) {
+                 longestCode = text;
               }
            }
            if (longestCode.length > 20) solution = longestCode;
@@ -798,6 +822,22 @@
       updateButtonLabels()
     }
 
+    const submitBtn = modal.querySelector("#lp-submit-btn");
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = "Verifying...";
+    submitBtn.disabled = true;
+
+    // Verify credentials by attempting to update README and description
+    try {
+      await updateRepoDescription(token, repoUrl, branch)
+    } catch (error) {
+      console.error("Error setting up repository metadata:", error)
+      alert("Verification failed: Invalid GitHub Token or Repository URL. Please check your credentials.")
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+      return // Do not save or close modal
+    }
+
     // Save to chrome.storage
     await storageSet({
       "repo": repoUrl,
@@ -812,13 +852,25 @@
 
     document.body.removeChild(modal)
 
-    // Update README and description
-    try {
-      await updateRepoDescription(token, repoUrl, branch)
-    } catch (error) {
-      console.error("Error setting up repository metadata:", error)
-      showError("Initial repository setup failed. You may need to check your repository permissions.")
-    }
+    // Update buttons dynamically from "Configure" to "Push"
+    const pushButtons = [document.querySelector("#leet2hub-btn"), document.querySelector("#leet2hub-btn-CodeEditor")]
+    pushButtons.forEach((button) => {
+      if (button) {
+        button.textContent = "Push"
+        button.title = `Push (${SHORTCUT_DISPLAY})`
+      }
+    })
+
+    // Reveal edit buttons and dividers
+    const editButtons = [document.querySelector("#leet2hub-div-edit"), document.querySelector("#leet2hub-div-edit-CodeEditor")]
+    editButtons.forEach((btn) => {
+      if (btn) btn.style.display = "flex"
+    })
+    
+    const dividers = [document.querySelector("#leet2hub-div-edit-divider"), document.querySelector("#leet2hub-div-edit-CodeEditor-divider")]
+    dividers.forEach((div) => {
+      if (div) div.style.display = "block"
+    })
   }
 
   function updateButtonLabels() {
@@ -1313,17 +1365,17 @@
     const [userName, repoName] = repo.split("/").slice(3, 5)
     const description = "This repository is managed by Leet2Hub extension"
 
-    try {
-      await fetchViaProxy(`${BASE_URL}/${userName}/${repoName}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ description }),
-      })
-    } catch (error) {
-      console.error("Error updating repo metadata:", error)
+    const response = await fetchViaProxy(`${BASE_URL}/${userName}/${repoName}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ description }),
+    })
+    
+    if (!response.ok) {
+      throw new Error(`Failed to verify repository: ${response.status}`)
     }
   }
 
@@ -1400,40 +1452,42 @@
 
   async function generateAIExplanation(code, problemName, apiKey, aiProvider, customPrompt) {
     const prompt = `
-You are an expert DSA programmer. I have just solved the LeetCode problem "${problemName}". 
+You are an expert Senior Software Engineer conducting a deep-dive code review. I have just solved the LeetCode problem "${problemName}". 
 Here is my code solution:
 
 \`\`\`
 ${code}
 \`\`\`
 
-Please write a detailed explanation of this solution in Markdown format. 
-IMPORTANT: If you detect multiple different approaches in my code (e.g., older approaches commented out, and one active approach), you MUST document ALL of them separately. Explain the intuition, approach, and complexity for each distinct approach, and include the specific code snippet for that approach within its section. If there is only one approach, just explain that one.
+Please write a highly detailed, exhaustive explanation of this solution in Markdown format. DO NOT just give a high-level textbook summary. You must analyze the EXACT code provided.
+IMPORTANT: If you detect multiple different approaches in my code (e.g., older approaches commented out, and one active approach), you MUST document ALL of them separately. Explain the intuition, approach, code analysis, and complexity for each distinct approach, and include the specific code snippet for that approach within its section. If there is only one approach, just explain that one.
 
 Format it EXACTLY like this structure, using emojis and a professional, clear, conversational tone.
 
 Format required:
 # 🛍️ ${problemName} | Explained
 
-## Approach 1 (e.g., Brute Force)
+## Approach 1 (e.g., Optimized)
 ### Intuition
-[Explain the core idea using a real-world analogy]
+[Explain the core idea using a real-world analogy. Why does this approach work?]
 ### Approach
-[Step-by-step breakdown of how the algorithm works]
+[Step-by-step algorithmic breakdown. High level logic flow.]
+### Detailed Code Analysis
+[Deep dive into the code block. Explain EXACTLY what the code is doing line-by-line or block-by-block. Explain why specific data structures were chosen, what key variables represent, and map the algorithmic steps directly to the code.]
 ### Code
 \`\`\`
 [Insert the specific code snippet for this approach here]
 \`\`\`
 ### Complexity
-- Time: [Time complexity]
-- Space: [Space complexity]
+- Time: [Detailed time complexity analysis]
+- Space: [Detailed space complexity analysis]
 
-## Approach 2 (e.g., Optimized)
+## Approach 2 (If applicable)
 [If applicable, document the next approach in the exact same structure. Repeat for as many approaches as found in the code.]
 
 ## 🕵️‍♂️ Follow-up Questions (Optional)
 [If applicable, what are 1-2 common interviewer follow-up questions for this pattern and brief answers]
-${customPrompt ? `\nUser's custom instructions for the explanation:\n${customPrompt}\n` : ""}
+${customPrompt ? `\\nUser's custom instructions for the explanation:\\n${customPrompt}\\n` : ""}
 `;
 
     try {
@@ -1472,6 +1526,21 @@ ${customPrompt ? `\nUser's custom instructions for the explanation:\n${customPro
 
   // Initialize on page load
   initLeet2Hub()
+
+  // Handle auto-setup parameter
+  if (window.location.search.includes("leet2hub_setup=true")) {
+    setTimeout(showConfigModal, 1500);
+  }
+
+  // Handle messages from popup
+  if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.onMessage) {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action === "show_config_modal") {
+        showConfigModal();
+        sendResponse({ success: true });
+      }
+    });
+  }
 
   // Re-initialize on DOM changes (for single-page apps)
   const observer = new MutationObserver((mutations) => {

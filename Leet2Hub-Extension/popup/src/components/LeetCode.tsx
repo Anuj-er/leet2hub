@@ -3,13 +3,15 @@ import Daily from "@/components/Daily.tsx";
 import Spinner from "@/components/ui/Spinner.tsx";
 import Stats from "@/components/Stats.tsx";
 import Streak from "@/components/Streak.tsx";
+import ConfigureGithubButton from "@/components/ConfigureGithubButton.tsx";
+import ResetGithubButton from "@/components/ResetGithubButton.tsx";
 
 import {
   DailyProblemI,
   UserStatsI,
   UserStreakI,
 } from "@/types/leet2hub.interface.ts";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/userContext.tsx";
 import { useDailyProblem } from "@/hooks/tanstack/queries/useDailyProblem";
 import { useUserStats } from "@/hooks/tanstack/mutations/useUserStats";
@@ -17,6 +19,17 @@ import { useUserStreak } from "@/hooks/tanstack/mutations/useUserStreak";
 
 export default function LeetCode() {
   const { username } = useContext(UserContext);
+  const [isGithubConfigured, setIsGithubConfigured] = useState(true); // Default true to avoid flash
+
+  useEffect(() => {
+    if (typeof chrome !== "undefined" && chrome.storage) {
+      chrome.storage.local.get(["token", "repo"], (result) => {
+        if (!result.token || !result.repo) {
+          setIsGithubConfigured(false);
+        }
+      });
+    }
+  }, []);
 
   const {
     data: dailyProblemData,
@@ -51,10 +64,12 @@ export default function LeetCode() {
         </div>
       ) : (
         <div className="space-y-4">
+          {!isGithubConfigured && <ConfigureGithubButton />}
           <Welcome username={username} totalProblems={totalProblems} />
           <Stats data={userStatsData ?? ({} as UserStatsI)} />
           <Streak data={userStreakData ?? ({} as UserStreakI)} />
           <Daily data={dailyProblemData ?? ({} as DailyProblemI)} />
+          {isGithubConfigured && <ResetGithubButton onReset={() => setIsGithubConfigured(false)} />}
         </div>
       )}
     </div>
