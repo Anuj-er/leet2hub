@@ -206,6 +206,17 @@
             display: none !important;
           }
           
+          /* Un-hide the daily challenge streak number and icon */
+          a[aria-label="Daily Question"] .text-brand-orange,
+          a[href*="daily-question"] .text-brand-orange,
+          a[aria-label="Daily Question"] svg.text-brand-orange,
+          a[href*="daily-question"] svg.text-brand-orange,
+          a[aria-label="Daily Question"] {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+
           /* Debugger button on the left sidebar & any premium-locked clickable container */
           div.cursor-pointer:has(svg.text-brand-orange),
           div.group.cursor-pointer:has(svg.text-brand-orange),
@@ -860,7 +871,7 @@
     if (!repoUrlInput || !tokenInput || !separateFolderInput) return
 
     // Validate GitHub URL format
-    const githubUrlPattern = /^https:\/\/github\.com\/[\w-]+\/[\w.-]+$/
+    const githubUrlPattern = /^https:\/\/github\.com\/[\w-]+\/[\w.-]+\/?$/
     if (!githubUrlPattern.test(repoUrlInput.value)) {
       alert("Please enter a valid GitHub repository URL (https://github.com/username/repository).")
       return
@@ -872,7 +883,8 @@
       return
     }
 
-    const repoUrl = repoUrlInput.value.endsWith(".git") ? repoUrlInput.value.slice(0, -4) : repoUrlInput.value
+    const repoUrlValue = repoUrlInput.value.replace(/\/$/, "");
+    const repoUrl = repoUrlValue.endsWith(".git") ? repoUrlValue.slice(0, -4) : repoUrlValue;
     const token = tokenInput.value
     const branch = "main" // Hardcoded to main
     const separateFolder = separateFolderInput.value
@@ -1581,7 +1593,7 @@ ${customPrompt ? `\\nUser's custom instructions for the explanation:\\n${customP
         if (data.error) throw new Error(data.error.message);
         return data.choices?.[0]?.message?.content || "Failed to generate explanation.";
       } else {
-        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

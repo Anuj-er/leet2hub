@@ -2,49 +2,55 @@
   <img src="banner.png" alt="Leet2Hub Banner" width="100%" />
 </div>
 
+<h1 align="center">Leet2Hub</h1>
+
 <p align="center">
-  <b>A powerful, fully-automated ecosystem designed to seamlessly sync your LeetCode progress to GitHub, augmented by next-generation AI explanations.</b>
+  <b>A fully-automated Chrome Extension designed to seamlessly sync your LeetCode progress to GitHub, augmented by next-generation AI explanations.</b>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.2.2-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  <a href="https://chromewebstore.google.com/detail/hnopmaolpcoaghfeholbldmppipopfkk"><img src="https://img.shields.io/badge/Available_on-Chrome_Web_Store-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Web Store"></a>
-  <img src="https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini AI">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Extension">
+  <img src="https://img.shields.io/badge/Gemini_1.5_Flash-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini AI">
 </p>
 
 ---
 
-## 📖 Introduction
+## Introduction
 
-**Leet2Hub** bridges the gap between grinding Data Structures and Algorithms on LeetCode and building an impressive, professional GitHub portfolio. This robust Chrome Extension + API ecosystem completely eliminates the tedious process of copying, pasting, organizing, and formatting your code.
+**Leet2Hub** bridges the gap between solving Data Structures and Algorithms on LeetCode and building a professional GitHub portfolio. This Chrome Extension eliminates the manual process of copying, pasting, organizing, and formatting your code.
 
-Every time you solve a problem, Leet2Hub automatically pushes your code, execution time, and memory metrics to your target GitHub repository. Even better, it uses the **Google Gemini API** to write a beautifully formatted Markdown `README.md` explaining your algorithm's Intuition, Approach, and Complexity Analysis!
-
----
-
-## 🌟 Key Features
-
-*   **🤖 AI-Generated Solutions:** Powered by the Google Gemini API! Leet2Hub reads your code and automatically generates a pristine Markdown `README.md` containing deep algorithmic insights for every problem you push.
-*   **📂 DSA Folder Auto-Categorization:** Fetches problem tags via LeetCode's GraphQL API and automatically routes your code to specific topic folders (e.g., `01-Arrays-and-Hashing`, `09-Trees`).
-*   **📦 Smart Packaging:** Creates a dedicated sub-folder for every problem containing both your source code and your AI-generated explanation.
-*   **💅 Glassmorphism UI:** A sleek, modern configuration modal matching LeetCode's native golden-orange (`#ffa116`) aesthetic.
-*   **⚡ One-Click Push:** Automatically push your solved problems from LeetCode to GitHub with a single click or keyboard shortcut.
-*   **📈 Performance Metrics:** Your GitHub commit messages automatically include LeetCode Time and Memory performance stats (e.g., `[Time Beats: 98%]`).
-*   **🛡️ Secure & Sandboxed:** Uses Chrome's `chrome.storage.local` to securely store your Personal Access Tokens and API keys entirely locally.
+Upon solving a problem, Leet2Hub automatically pushes your code, execution time, and memory metrics to a designated GitHub repository. Furthermore, it integrates with the **Google Gemini 1.5 Flash API** to generate a comprehensive Markdown `README.md` that explains your algorithm's Intuition, Approach, and Complexity Analysis.
 
 ---
 
-## 🏗️ System Architecture Workflow
+## Key Features
 
-Leet2Hub operates entirely on the client side without needing an intermediate server to sync your code to GitHub.
+*   **AI-Generated Solutions (Upgraded):** Powered by the Google Gemini 1.5 Flash API. Leet2Hub processes your code and automatically generates a detailed Markdown `README.md` containing algorithmic insights for every problem you push.
+*   **Interactive Dashboard:** A modern popup dashboard to track your Daily Streak, Total Problems Solved, Difficulty Breakdown, and the active Daily Challenge.
+*   **DSA Folder Auto-Categorization:** Fetches problem tags via LeetCode's GraphQL API and automatically routes your code to specific topic directories (e.g., `01-Arrays-and-Hashing`, `09-Trees`).
+*   **Smart Packaging:** Creates a dedicated sub-directory for every problem containing both your source code and the AI-generated explanation.
+*   **Glassmorphism UI:** A sleek configuration modal designed to match LeetCode's native aesthetic.
+*   **One-Click Push:** Automatically push your solved problems from LeetCode to GitHub with a single click.
+*   **Performance Metrics:** GitHub commit messages automatically include LeetCode Time and Memory performance statistics (e.g., `[Time Beats: 98%]`).
+*   **Secure & Sandboxed:** Utilizes Chrome's `chrome.storage.local` to securely store your Personal Access Tokens and API keys entirely locally.
+*   **Customizable UI Preferences:** Toggle off Premium Icons directly from the Leet2Hub settings for a cleaner LeetCode interface.
+
+---
+
+## System Architecture Workflow
+
+Leet2Hub operates entirely on the client side without requiring an intermediate server to synchronize your code to GitHub.
 
 ```mermaid
 sequenceDiagram
     participant User as You (LeetCode)
     participant L2H as Leet2Hub Chrome Extension
     participant LC as LeetCode GraphQL
-    participant Gemini as Google Gemini AI
+    participant Gemini as Google Gemini 1.5 Flash
     participant GH as GitHub REST API
 
     User->>L2H: Submits Accepted Code & Clicks "Push"
@@ -59,54 +65,100 @@ sequenceDiagram
     L2H-->>User: Visual "Done" Indicator
 ```
 
+<br/>
+
 ### Component Structure
 
 ```mermaid
-graph TD
-    A[LeetCode UI] -->|Injects Button| B(Content Script)
-    B -->|Bypasses Virtual DOM| C{Code Extraction Module}
-    C -->|Reads `__NEXT_DATA__`| D[Next.js JSON State]
-    C -->|Queries| E[localStorage Cache]
-    C -->|Injects `<script>`| F[Monaco Editor Instance]
+graph LR
+    subgraph Frontend Injection
+        A[LeetCode UI] -->|Injects Buttons| B(Content Script)
+    end
     
-    B -->|Metadata| G[Background Service Worker]
-    G -->|Commit| H[GitHub Repository]
+    subgraph Data Extraction
+        B -->|Bypasses Virtual DOM| C{Code Extraction Module}
+        C -.->|Reads `__NEXT_DATA__`| D[Next.js JSON State]
+        C -.->|Queries| E[localStorage Cache]
+        C -.->|Injects `<script>`| F[Monaco Editor Instance]
+    end
+    
+    subgraph External APIs
+        B -->|Metadata & Prompts| G[Background Proxy]
+        G -->|Bypasses CSP| H[GitHub REST & Gemini API]
+    end
 ```
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
-1.  **Install via Chrome Web Store**: [Download Leet2Hub directly from the Chrome Web Store!](https://chromewebstore.google.com/detail/hnopmaolpcoaghfeholbldmppipopfkk)
-2.  **Configure GitHub**: Pin the extension to your toolbar and open any LeetCode problem. The Leet2Hub configuration modal will appear.
-4.  **Enter Credentials**: 
+1.  **Clone or Download**: Download this repository and extract the ZIP file.
+2.  **Load Unpacked Extension**: Open `chrome://extensions/` in Google Chrome, enable **Developer mode** in the top right, and click **Load unpacked**. Select the `Leet2Hub-Extension/dist` directory (or build the project yourself using `npm run build` in the popup directory).
+3.  **Launch Dashboard**: Pin the extension to your toolbar. Click the extension icon to view the Leet2Hub Dashboard.
+4.  **Configure GitHub**: Click the **Configure GitHub Integration** button in the dashboard, or open any LeetCode problem. The Leet2Hub configuration modal will appear.
+5.  **Enter Credentials**: 
     *   **GitHub Repository URL**: Link to your target repository (e.g., `https://github.com/anuj-er/LeetCode-Solutions`).
     *   **Personal Access Token**: A Classic token with the `repo` scope.
-5.  **Configure AI (Optional)**: Paste your **Google Gemini API Key** and toggle "Generate AI Explanation" to **yes**.
-6.  **Push!**: Solve a problem on LeetCode, wait for the green "Accepted" text, and click the golden **Push** button (or press your configured shortcut).
+6.  **Configure AI (Optional)**: Provide your **Google Gemini API Key** and toggle "Generate AI Explanation" to **yes**.
 
 ---
 
-## 🛠️ Project Ecosystem
+## Usage Guide
+
+Using Leet2Hub is designed to be frictionless. Follow this workflow for the best experience:
+
+<div align="center">
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> 1
+    1: 1. Go to LeetCode
+    1 --> 2
+    2: 2. Write & Submit
+    2 --> 3
+    3: 3. Wait for "Accepted"
+    3 --> 4
+    4: 4. Click "Push" Button
+    4 --> 5
+    5: 5. Code Syncs to Repo
+    5 --> [*]
+```
+
+</div>
+
+### 1. Solve and Submit
+Navigate to any LeetCode problem. Write your solution and click the green **Submit** button on LeetCode. **Important:** You must submit your code and receive an "Accepted" verdict first.
+
+### 2. Click the Push Button
+Once your solution is accepted, locate the LeetCode action bar (where the Submit button resides). Leet2Hub injects a custom **Push** button adjacent to it. 
+> *Note: If the Push button is not visible, ensure you have fully configured your GitHub repository in the extension settings.*
+
+### 3. Verify on GitHub
+A small notification will appear on the Push button indicating "Pushing...", which will eventually transition into a green checkmark indicating success. Check your GitHub repository to see your code formatted in its own directory, complete with an AI-generated `README.md` if the Gemini integration was enabled.
+
+---
+
+## Project Ecosystem
 
 This repository is split into two primary components:
 
 ### 1. `Leet2Hub-Extension`
-The core Google Chrome Extension. It injects the frontend UI into LeetCode, securely stores user configurations, parses complex dynamic DOM nodes (Next.js state, Monaco editor models), and communicates with the GitHub API.
+The core Google Chrome Extension. It injects the frontend UI into LeetCode, securely stores user configurations, parses complex dynamic DOM nodes (Next.js state, Monaco editor models), and communicates with the GitHub API. The popup dashboard is built with React, Tailwind CSS, and Vite.
 
 ### 2. `Leet2Hub-api`
 Supporting backend API services (if deployed) for handling complex OAuth flows, proxying requests to bypass strict CORS policies, or future analytics features.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Created and maintained by **[anuj-er](https://github.com/anuj-er)**.
 
-If you find this extension helpful in your DSA journey, please consider giving the repository a ⭐!
+If you find this extension helpful, please consider giving the repository a star.
 
-## 🤝 Contributing
-Contributions, issues, and feature requests are always welcome! Feel free to check the [issues page](https://github.com/anuj-er/Leet2Hub/issues).
+## Contributing
+Contributions, issues, and feature requests are welcome. Feel free to check the [issues page](https://github.com/anuj-er/Leet2Hub/issues).
 
-## 📄 License
+## License
 This project is open-source and licensed under the [MIT License](LICENSE).
