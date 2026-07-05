@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/banner.png" alt="Leet2Hub Extension Banner" width="100%" />
+  <img src="assets/logo.png" alt="Leet2Hub Extension Logo" width="200" />
 </div>
 
 <h1 align="center">Leet2Hub Chrome Extension 🚀</h1>
