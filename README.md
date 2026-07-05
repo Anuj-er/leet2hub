@@ -2,7 +2,6 @@
   <img src="banner.png" alt="Leet2Hub Banner" width="100%" />
 </div>
 
-<h1 align="center">Leet2Hub</h1>
 
 <p align="center">
   <b>A fully-automated Chrome Extension designed to seamlessly sync your LeetCode progress to GitHub, augmented by next-generation AI explanations.</b>
