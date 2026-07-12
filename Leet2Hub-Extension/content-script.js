@@ -259,6 +259,17 @@
   }
 
   // Helper functions
+  function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  }
+
   function isSubmissionPage() {
     return window.location.href.includes("submissions")
   }
@@ -266,12 +277,25 @@
   function hasAcceptedSolution() {
     if (document.querySelector(SELECTORS.accepted)?.textContent?.includes("Accepted")) return true;
     
-    // Robust fallback: Find any span/div with "Accepted" text that is green
-    const elements = document.querySelectorAll("span, div");
-    for (const el of elements) {
-      if (el.textContent === "Accepted" && (el.className.includes("text-green") || el.style.color === "green" || el.className.includes("success"))) {
-        return true;
+    // Robust fallback using XPath (massively faster than iterating all spans/divs in JS)
+    try {
+      const xpath = "//*[contains(text(), 'Accepted')]";
+      const result = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
+      let node = result.iterateNext();
+      while (node) {
+        const className = node.getAttribute("class") || "";
+        if (
+          className.includes("text-green") || 
+          className.includes("success") || 
+          node.style.color === "green" || 
+          node.style.color === "rgb(44, 181, 93)"
+        ) {
+          return true;
+        }
+        node = result.iterateNext();
       }
+    } catch(e) {
+      // Ignore xpath errors
     }
     return false;
   }
@@ -417,63 +441,51 @@
   // Problem info extraction
   async function extractProblemInfo() {
     try {
-      // Prioritize Page Title as it is the most robust (if it happens to contain the number)
       let probNameText = "";
-      const titleMatch = document.title.match(/^(\d+)\.\s*(.+?)\s*-/);
-      if (titleMatch) {
-        probNameText = `${titleMatch[1]}. ${titleMatch[2]}`;
+      const urlSlug = window.location.pathname.split('/')[2]; // e.g., "minimum-path-sum"
+      const formattedSlug = urlSlug ? urlSlug.split('-').join(' ').toLowerCase() : "";
+
+      // 1. Next.js internal data (Modern LeetCode UI)
+      const nextDataScript = document.getElementById('__NEXT_DATA__');
+      if (nextDataScript) {
+        try {
+          const dataStr = nextDataScript.textContent;
+          const idMatch = dataStr.match(/"questionFrontendId":"(\d+)"/);
+          const titleMatch = dataStr.match(/"title":"([^"]+)"/);
+          if (idMatch && titleMatch && titleMatch[1].toLowerCase() === formattedSlug) {
+            probNameText = `${idMatch[1]}. ${titleMatch[1]}`;
+          }
+        } catch(e) {}
+      }
+
+      // 2. Page Title (if it happens to contain the number)
+      if (!probNameText) {
+        const titleMatch = document.title.match(/^(\d+)\.\s*(.+?)\s*-/);
+        if (titleMatch && (!formattedSlug || titleMatch[2].toLowerCase() === formattedSlug)) {
+          probNameText = `${titleMatch[1]}. ${titleMatch[2]}`;
+        }
       }
       
-      // Fallback 1: Fuzzy Search for problem name "1. Two Sum" in leaf nodes
-      if (!probNameText) {
+      // 3. Fuzzy Search in DOM, strictly requiring it to match the URL slug
+      if (!probNameText && formattedSlug) {
         const elements = document.querySelectorAll("a, div, span, h1, h2, h3");
         for (const el of elements) {
           const text = el.textContent?.trim() || "";
-          if (text.length > 3 && text.length < 100 && text.match(/^\d+\.\s+[A-Za-z0-9]/)) {
-            // Ensure we're grabbing the most specific text node (not a giant wrapper div)
-            if (el.children.length === 0 || el.tagName === "A") {
-              probNameText = text;
-              break;
+          if (text.length > 3 && text.length < 100 && text.match(/^\d+\.\s+/)) {
+            if (text.toLowerCase().includes(formattedSlug)) {
+              if (el.children.length === 0 || el.tagName === "A" || el.tagName === "H1" || el.tagName === "H2") {
+                probNameText = text;
+                break;
+              }
             }
           }
         }
       }
 
-      // Fallback 2: Next.js internal data (Modern LeetCode UI)
-      if (!probNameText) {
-        const nextDataScript = document.getElementById('__NEXT_DATA__');
-        if (nextDataScript) {
-          try {
-            const nextData = JSON.parse(nextDataScript.textContent);
-            // Quick string search for questionFrontendId to avoid strict deep pathing
-            const dataStr = nextDataScript.textContent;
-            const idMatch = dataStr.match(/"questionFrontendId":"(\d+)"/);
-            const titleMatch = dataStr.match(/"title":"([^"]+)"/);
-            if (idMatch && titleMatch) {
-              probNameText = `${idMatch[1]}. ${titleMatch[1]}`;
-            }
-          } catch(e) {
-             // Silently fail if JSON parse errors
-          }
-        }
-      }
-
-      // Ultimate Fallback: URL slug (Guaranteed to work, defaults number to 0000)
-      if (!probNameText) {
-        const urlSlug = window.location.pathname.split('/')[2];
-        if (urlSlug) {
-           const formattedName = urlSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-           probNameText = `0000. ${formattedName}`;
-        }
-      }
-
-      // Fallback 2: Meta tags or other headers
-      if (!probNameText) {
-        const metaTitle = document.querySelector('meta[property="og:title"]');
-        if (metaTitle && metaTitle.content) {
-          const titleMatch = metaTitle.content.match(/^(\d+)\.\s*(.+?)\s*-/);
-          if (titleMatch) probNameText = `${titleMatch[1]}. ${titleMatch[2]}`;
-        }
+      // 4. Ultimate Fallback: URL slug (Guaranteed to work, defaults number to 0000)
+      if (!probNameText && urlSlug) {
+        const formattedName = urlSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        probNameText = `0000. ${formattedName}`;
       }
 
       if (!probNameText) {
@@ -1789,14 +1801,14 @@ CONSTRAINTS:
   }
 
   // Re-initialize on DOM changes (for single-page apps)
-  const observer = new MutationObserver((mutations) => {
+  const observer = new MutationObserver(throttle((mutations) => {
     if (isSubmissionPage() && hasAcceptedSolution()) {
       const hasButtons = document.getElementById("leet2hub-btn") || document.getElementById("leet2hub-btn-CodeEditor")
       if (!hasButtons) {
         initLeet2Hub()
       }
     }
-  })
+  }, 500))
 
   observer.observe(document.body, { childList: true, subtree: true })
 })()
