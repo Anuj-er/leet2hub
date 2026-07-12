@@ -743,8 +743,13 @@
             <input type="text" id="repo-url" name="repo-url" placeholder="https://github.com/username/repository" required>
           </div>
           <div class="lp-div">
-            <label>GitHub Token: <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic" target="_blank">Generate Token?</a></label>
-            <input type="password" id="token" name="token" placeholder="ghp_..." required>
+            <label>GitHub Token: <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic" target="_blank" class="lp-link-blue">Generate Token?</a></label>
+            <div class="lp-password-wrapper">
+              <input type="password" id="token" name="token" placeholder="ghp_..." required>
+              <button type="button" class="lp-toggle-password" data-target="token" title="Toggle visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -794,8 +799,13 @@
             </div>
           </div>
           <div class="lp-div">
-            <label>API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link">Get Key</a></label>
-            <input type="password" id="api-key" name="api-key" placeholder="API Key...">
+            <label>API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link" class="lp-link-blue">Get Key</a></label>
+            <div class="lp-password-wrapper">
+              <input type="password" id="api-key" name="api-key" placeholder="API Key...">
+              <button type="button" class="lp-toggle-password" data-target="api-key" title="Toggle visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
           <div class="lp-div">
             <label>Generate AI README.md:</label>
@@ -859,6 +869,21 @@
     modal.querySelector("#lp-close-btn button")?.addEventListener("click", () => {
       document.body.removeChild(modal)
     })
+
+    // Password toggle listeners
+    modal.querySelectorAll('.lp-toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const input = modal.querySelector(`#${targetId}`);
+        if (input.type === 'password') {
+          input.type = 'text';
+          btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`;
+        } else {
+          input.type = 'password';
+          btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+        }
+      });
+    });
 
     // Dynamic link for API Key based on provider
     const aiProviderInputs = modal.querySelectorAll('input[name="ai-provider"]');

@@ -583,3 +583,51 @@
 .lp-ai-card input[type="radio"]:checked + .lp-ai-card-content .lp-ai-icon {
   color: #ffa116;
 }
+
+.lp-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lp-password-wrapper input {
+  padding-right: 36px !important;
+  width: 100%;
+}
+
+.lp-toggle-password {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #71717a;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.lp-toggle-password:hover {
+  color: #a1a1aa;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.lp-toggle-password svg {
+  width: 16px;
+  height: 16px;
+}
+
+.lp-link-blue {
+  color: #3b82f6 !important;
+  font-size: 11px;
+  text-decoration: underline;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.lp-link-blue:hover {
+  color: #60a5fa !important;
+}
