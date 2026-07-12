@@ -1721,7 +1721,7 @@ CONSTRAINTS:
         if (data.error) throw new Error(data.error.message);
         return data.content?.[0]?.text || "Failed to generate explanation.";
       } else {
-        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
