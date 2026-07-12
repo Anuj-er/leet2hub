@@ -895,12 +895,16 @@
     if (aiProviderInputs.length > 0 && apiKeyLink) {
       aiProviderInputs.forEach(input => {
         input.addEventListener("change", (e) => {
+          const apiKeyInput = modal.querySelector("#api-key");
           if (e.target.value === "groq") {
             apiKeyLink.href = "https://console.groq.com/keys";
+            if (apiKeyInput) apiKeyInput.placeholder = "Groq API Key...";
           } else if (e.target.value === "claude") {
             apiKeyLink.href = "https://console.anthropic.com/settings/keys";
+            if (apiKeyInput) apiKeyInput.placeholder = "Anthropic API Key...";
           } else {
             apiKeyLink.href = "https://aistudio.google.com/app/apikey";
+            if (apiKeyInput) apiKeyInput.placeholder = "Gemini API Key...";
           }
         });
       });
