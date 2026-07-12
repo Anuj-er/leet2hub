@@ -121,7 +121,7 @@ export default function ConnectedRepo() {
             </span>
           )}
         </div>
-        <div className="flex flex-col mt-1 max-h-[130px] overflow-y-auto pr-1">
+        <div className="flex flex-col mt-1 max-h-[130px] overflow-y-auto pr-1 scrollbar-hidden">
           {recentSubmissions.length > 0 ? (
             <div className="divide-y divide-[#3e3e3e]">
               {recentSubmissions.map((sub, idx) => (
