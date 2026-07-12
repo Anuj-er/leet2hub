@@ -37,6 +37,7 @@
 		"https://api.github.com/*",
 		"https://generativelanguage.googleapis.com/*",
 		"https://api.groq.com/*",
+		"https://api.anthropic.com/*",
 		"https://leet2hub.vercel.app/*"
 	],
 	"icons": {
