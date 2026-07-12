@@ -755,7 +755,7 @@
                 <input type="radio" name="ai-provider" value="gemini" checked>
                 <div class="lp-ai-card-content">
                   <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
+                    <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" fill="currentColor"/>
                   </svg>
                   <div class="lp-ai-card-text">
                     <h4>Google Gemini</h4>
@@ -767,12 +767,25 @@
               <label class="lp-ai-card">
                 <input type="radio" name="ai-provider" value="groq">
                 <div class="lp-ai-card-content">
-                  <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor"/>
+                  <svg class="lp-ai-icon" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M105.304012.00401184C47.7040118-.49598816.50401184 45.8040118.00401184 103.404012c-.5 57.6 45.79999996 104.8 103.40000016 105.3h36.2v-39.1h-34.3c-36.0000002.4-65.6000002-28.4-66.0000002-64.5-.4-36.1000002 28.4-65.6000002 64.5000002-66.0000002h1.5c36 0 65.2 29.2 65.4 65.2000002v96.1c0 35.7-29.1 64.8-64.7 65.2-17.1000002-.1-33.4000002-7-45.4000002-19.1l-27.7 27.7c19.2 19.3 45.2 30.3 72.4000002 30.5h1.4c56.9-.8 102.6-47 102.9-103.9v-99.1c-1.4-56.5000002-47.7-101.60000016-104.3-101.70000016Z" fill="currentColor"/>
                   </svg>
                   <div class="lp-ai-card-text">
                     <h4>Groq (Llama 3)</h4>
                     <p>Lightning fast</p>
+                  </div>
+                </div>
+              </label>
+
+              <label class="lp-ai-card">
+                <input type="radio" name="ai-provider" value="claude">
+                <div class="lp-ai-card-content">
+                  <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
+                  </svg>
+                  <div class="lp-ai-card-text">
+                    <h4>Anthropic Claude</h4>
+                    <p>3.5 Sonnet</p>
                   </div>
                 </div>
               </label>
@@ -853,6 +866,8 @@
         input.addEventListener("change", (e) => {
           if (e.target.value === "groq") {
             apiKeyLink.href = "https://console.groq.com/keys";
+          } else if (e.target.value === "claude") {
+            apiKeyLink.href = "https://console.anthropic.com/settings/keys";
           } else {
             apiKeyLink.href = "https://aistudio.google.com/app/apikey";
           }
@@ -1684,6 +1699,24 @@ CONSTRAINTS:
         const data = await response.json();
         if (data.error) throw new Error(data.error.message);
         return data.choices?.[0]?.message?.content || "Failed to generate explanation.";
+      } else if (aiProvider === "claude") {
+        const response = await fetchViaProxy(`https://api.anthropic.com/v1/messages`, {
+          method: "POST",
+          headers: {
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "anthropic-dangerously-allow-browser": "true"
+          },
+          body: JSON.stringify({
+            model: "claude-3-5-sonnet-20241022",
+            max_tokens: 4000,
+            messages: [{ role: "user", content: prompt }]
+          })
+        });
+        const data = await response.json();
+        if (data.error) throw new Error(data.error.message);
+        return data.content?.[0]?.text || "Failed to generate explanation.";
       } else {
         const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: "POST",

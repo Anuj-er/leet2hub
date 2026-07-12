@@ -508,8 +508,8 @@
 
 /* AI Provider Cards */
 .lp-ai-cards-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin-top: 0.25rem;
 }
@@ -518,6 +518,7 @@
   display: block;
   cursor: pointer;
   position: relative;
+  height: 100%;
 }
 
 .lp-ai-card input[type="radio"] {
@@ -529,13 +530,18 @@
 
 .lp-ai-card-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.03);
   transition: all 0.2s ease;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .lp-ai-icon {
