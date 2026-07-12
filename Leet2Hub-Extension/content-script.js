@@ -358,8 +358,7 @@
     }
 
     const editButton = createButton(editContainerId, editButtonId, editText, async () => {
-      await storageRemove(["repo", "token"]);
-      handlePushClick();
+      await showConfigModal();
     }, editTooltip)
 
     if (!isConfigured) {
