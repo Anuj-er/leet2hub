@@ -534,8 +534,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 0.5rem;
-  padding: 1rem 0.5rem;
+  gap: 0.35rem;
+  padding: 0.6rem 0.25rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.03);
@@ -550,24 +550,25 @@
   color: #999;
   transition: color 0.2s ease;
   flex-shrink: 0;
+  display: block;
+  margin: 0 auto;
 }
 
 .lp-ai-card-text {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 
 .lp-ai-card-text h4 {
-  margin: 0;
-  font-size: 13px;
-  color: #e0e0e0;
-  font-weight: 600;
+  margin: 0 0 0.15rem 0;
+  font-size: 11px;
+  color: #fff;
+  white-space: nowrap;
 }
 
 .lp-ai-card-text p {
   margin: 0;
-  font-size: 11px;
-  color: #999;
+  font-size: 9px;
+  color: #aaa;
 }
 
 .lp-ai-card:hover .lp-ai-card-content {

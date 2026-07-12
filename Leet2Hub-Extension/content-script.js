@@ -731,7 +731,10 @@
     modal.innerHTML = `
     <div id="lp-container">
       <div id="lp-close-btn"><button>×</button></div>
-      <h3>Leet2<span>Hub</span></h3>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px;">
+        <img src="${chrome.runtime.getURL('images/logo.png')}" alt="Leet2Hub Logo" style="width: 32px; height: 32px; border-radius: 8px; object-fit: contain;">
+        <h3 style="margin: 0;">Leet2<span>Hub</span></h3>
+      </div>
       <form id="lp-form">
         
         <div class="lp-section">

@@ -45,5 +45,11 @@
 		"128": "images/icon-128x128.png",
 		"192": "images/android-chrome-192x192.png",
 		"512": "images/android-chrome-512x512.png"
-	}
+	},
+	"web_accessible_resources": [
+		{
+			"resources": ["images/logo.png"],
+			"matches": ["https://*.leetcode.com/*"]
+		}
+	]
 }
