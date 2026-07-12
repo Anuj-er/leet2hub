@@ -12,7 +12,7 @@
 
 ## Overview
 
-This directory contains the source code for the **Leet2Hub Chrome Extension**. It operates entirely on the client side, meaning there are no intermediate servers handling your code. It reads directly from your browser, generates AI explanations via Google Gemini, and pushes directly to GitHub using their REST API.
+This directory contains the source code for the **Leet2Hub Chrome Extension** (Version 1.4.0). It operates entirely on the client side, meaning there are no intermediate servers handling your code. It reads directly from your browser, generates AI algorithmic explanations using multiple providers (Google Gemini, Groq Llama 3, Anthropic Claude), and pushes your solutions directly to GitHub using their REST API.
 
 ## Directory Structure
 
@@ -49,8 +49,9 @@ This will compile the React code and output the raw HTML/JS/CSS into the `dist/`
 
 ## Architecture Details
 
-*   **State Management**: Extension preferences (GitHub Token, Repo URL, Gemini Key) are stored securely in `chrome.storage.local`. Ephemeral UI states are stored in standard `localStorage`.
-*   **AI Integration**: We use the `gemini-1.5-flash` model. The prompt is injected with the raw problem description and your solved source code to generate an algorithmic breakdown.
+*   **State Management**: Extension preferences (GitHub Token, Repo URL, API Keys) are stored securely in `chrome.storage.local`. Ephemeral UI states are stored in standard `localStorage`.
+*   **AI Integration**: We support three AI providers natively: Google Gemini, Groq (Llama 3), and Anthropic (Claude 3.5). The prompt is injected with the raw problem description and your solved source code to generate an algorithmic breakdown. API calls are routed through the `background.js` Service Worker proxy to securely bypass LeetCode's CSP and CORS restrictions.
+*   **DOM Parsing & Performance**: LeetCode is a complex Single Page Application (SPA). To accurately detect solutions and extract problem information without causing lag, the extension relies on high-performance throttled `MutationObserver` listeners and native `XPath` robust fallbacks. It parses `__NEXT_DATA__` and the URL slug to prevent cross-page "Similar Questions" misidentification.
 *   **GitHub API**: Code is committed using a `PUT` request to `https://api.github.com/repos/{owner}/{repo}/contents/{path}`.
 
 ---
