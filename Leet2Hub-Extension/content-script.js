@@ -750,10 +750,33 @@
           <div class="lp-section-title">AI Explanations</div>
           <div class="lp-div">
             <label>AI Provider:</label>
-            <select id="ai-provider" name="ai-provider" class="lp-select">
-              <option value="gemini">Google Gemini</option>
-              <option value="groq">Groq (Llama 3)</option>
-            </select>
+            <div class="lp-ai-cards-grid">
+              <label class="lp-ai-card">
+                <input type="radio" name="ai-provider" value="gemini" checked>
+                <div class="lp-ai-card-content">
+                  <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
+                  </svg>
+                  <div class="lp-ai-card-text">
+                    <h4>Google Gemini</h4>
+                    <p>1.5 Flash (Default)</p>
+                  </div>
+                </div>
+              </label>
+
+              <label class="lp-ai-card">
+                <input type="radio" name="ai-provider" value="groq">
+                <div class="lp-ai-card-content">
+                  <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor"/>
+                  </svg>
+                  <div class="lp-ai-card-text">
+                    <h4>Groq (Llama 3)</h4>
+                    <p>Lightning fast</p>
+                  </div>
+                </div>
+              </label>
+            </div>
           </div>
           <div class="lp-div">
             <label>API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link">Get Key</a></label>
@@ -823,15 +846,17 @@
     })
 
     // Dynamic link for API Key based on provider
-    const aiProviderSelect = modal.querySelector("#ai-provider");
+    const aiProviderInputs = modal.querySelectorAll('input[name="ai-provider"]');
     const apiKeyLink = modal.querySelector("#api-key-link");
-    if (aiProviderSelect && apiKeyLink) {
-      aiProviderSelect.addEventListener("change", (e) => {
-        if (e.target.value === "groq") {
-          apiKeyLink.href = "https://console.groq.com/keys";
-        } else {
-          apiKeyLink.href = "https://aistudio.google.com/app/apikey";
-        }
+    if (aiProviderInputs.length > 0 && apiKeyLink) {
+      aiProviderInputs.forEach(input => {
+        input.addEventListener("change", (e) => {
+          if (e.target.value === "groq") {
+            apiKeyLink.href = "https://console.groq.com/keys";
+          } else {
+            apiKeyLink.href = "https://aistudio.google.com/app/apikey";
+          }
+        });
       });
     }
 
@@ -865,7 +890,7 @@
     const shortcutModifierInput = modal.querySelector("#shortcut-modifier")
     const shortcutKeyInput = modal.querySelector("#shortcut-key")
     const apiKeyInput = modal.querySelector("#api-key")
-    const aiProviderInput = modal.querySelector("#ai-provider")
+    const aiProviderInput = modal.querySelector('input[name="ai-provider"]:checked')
     const aiPromptInput = modal.querySelector("#ai-prompt")
 
     if (!repoUrlInput || !tokenInput || !separateFolderInput) return
@@ -1006,10 +1031,10 @@
     if (apiKey) modal.querySelector("#api-key").value = apiKey
     if (aiPrompt) modal.querySelector("#ai-prompt").value = aiPrompt
     if (aiProvider) {
-      const select = modal.querySelector("#ai-provider");
-      if (select) {
-        select.value = aiProvider;
-        select.dispatchEvent(new Event('change'));
+      const providerRadio = modal.querySelector(`input[name="ai-provider"][value="${aiProvider}"]`);
+      if (providerRadio) {
+        providerRadio.checked = true;
+        providerRadio.dispatchEvent(new Event('change'));
       }
     }
 
@@ -1108,9 +1133,51 @@
       pushBtn.textContent = "Push";
 
       // Update statistics
-      const statsData = await storageGet(["solutions-pushed", "daily-challenges"]);
+      const statsData = await storageGet([
+        "solutions-pushed", 
+        "daily-challenges", 
+        "recent-submissions", 
+        "github-sync-streak", 
+        "github-last-sync-date"
+      ]);
       const solutionsPushed = Number.parseInt(statsData["solutions-pushed"] || "0") + 1;
       await storageSet({ "solutions-pushed": solutionsPushed.toString() });
+
+      // Update recent submissions
+      const recentSubmissions = statsData["recent-submissions"] || [];
+      const newSubmission = {
+        id: problemInfo.probNum,
+        title: problemInfo.readableName,
+        url: result?.githubUrl || `https://github.com/${userName}/${repoName}`,
+        timestamp: Date.now()
+      };
+      recentSubmissions.unshift(newSubmission);
+      // Keep only the 5 most recent
+      const limitedSubmissions = recentSubmissions.slice(0, 5);
+      
+      // Update GitHub Sync Streak
+      const today = new Date().toDateString();
+      const lastSyncDate = statsData["github-last-sync-date"];
+      let currentStreak = Number.parseInt(statsData["github-sync-streak"] || "0");
+      
+      if (lastSyncDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastSyncDate === yesterday.toDateString()) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+      } else if (currentStreak === 0) {
+        currentStreak = 1;
+      }
+      
+      await storageSet({ 
+        "recent-submissions": limitedSubmissions,
+        "github-sync-streak": currentStreak.toString(),
+        "github-last-sync-date": today
+      });
 
       // Check if it's a daily challenge
       try {
@@ -1233,11 +1300,13 @@
       }
 
       // 4. Push the Code File
-      await pushFileToRepo(userName, repoName, codeFilePath, targetBranch, solution, commitMsg, config.token)
+      const codePushResult = await pushFileToRepo(userName, repoName, codeFilePath, targetBranch, solution, commitMsg, config.token)
 
       // 5. Generate and Push AI Explanation (if enabled)
       if (config.aiGenerate === "yes") {
-        if (!config.apiKey && !config.geminiKey) {
+        if (!codePushResult.changed) {
+          console.log("Code file is identical to the repository. Skipping AI Explanation generation to save tokens.");
+        } else if (!config.apiKey && !config.geminiKey) {
           console.warn("AI Generation is enabled but no API Key is provided. Skipping README.md generation.");
         } else {
           try {
@@ -1255,12 +1324,12 @@
           } catch (e) {
             console.error("Failed to generate/push AI Explanation", e);
             // We don't throw here because the main code was already successfully pushed.
-            return { success: true, aiFailed: true };
+            return { success: true, aiFailed: true, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
           }
         }
       }
 
-      return { success: true, aiFailed: false };
+      return { success: true, aiFailed: false, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
     } catch (error) {
       console.error("Error in pushToGithub:", error)
       throw error // Propagate the error to be handled by the caller
@@ -1337,6 +1406,16 @@
           if (existingFileData && existingFileData.sha) {
             requestBody.sha = existingFileData.sha
             console.log("Found existing file SHA:", existingFileData.sha)
+            
+            // Check if the content is exactly the same to save API calls and tokens
+            if (existingFileData.content) {
+              const existingCleanContent = existingFileData.content.replace(/\n/g, "");
+              const newCleanContent = encodedContent.replace(/\n/g, "");
+              if (existingCleanContent === newCleanContent) {
+                console.log("Content is exactly the same, skipping push.");
+                return { success: true, changed: false, url: existingFileData.html_url };
+              }
+            }
           }
         } catch (error) {
           console.error("Error parsing existing file data:", error)
@@ -1438,8 +1517,8 @@
       }
 
       const responseData = await response.json()
-      console.log("File successfully pushed:", responseData.content.html_url)
-      return true
+      console.log("File successfully pushed:", responseData.content?.html_url)
+      return { success: true, changed: true, url: responseData.content?.html_url }
     } catch (error) {
       console.error("Error pushing file to repo:", error)
       // Don't show alert here, just propagate the error to be handled by the caller
@@ -1538,7 +1617,8 @@
 
   async function generateAIExplanation(code, problemName, apiKey, aiProvider, customPrompt) {
     const prompt = `
-You are an expert Senior Software Engineer conducting a deep-dive code review. I have just solved the LeetCode problem "${problemName}". 
+You are an expert Senior Software Engineer conducting a deep-dive code review. I have just solved the LeetCode problem "${problemName}".
+${customPrompt ? `\nCRITICAL USER INSTRUCTIONS:\nThe user has provided specific custom instructions that MUST be prioritized:\n"${customPrompt}"\n\n` : ""}
 Here is my code solution:
 
 \`\`\`
@@ -1546,34 +1626,46 @@ ${code}
 \`\`\`
 
 Please write a highly detailed, exhaustive explanation of this solution in Markdown format. DO NOT just give a high-level textbook summary. You must analyze the EXACT code provided.
-IMPORTANT: If you detect multiple different approaches in my code (e.g., older approaches commented out, and one active approach), you MUST document ALL of them separately. Explain the intuition, approach, code analysis, and complexity for each distinct approach, and include the specific code snippet for that approach within its section. If there is only one approach, just explain that one.
 
-Format it EXACTLY like this structure, using emojis and a professional, clear, conversational tone.
+IMPORTANT INSTRUCTIONS FOR MULTIPLE APPROACHES:
+If you detect multiple different approaches in my code (e.g., an older brute-force approach commented out, and a newer optimized active approach), you MUST document ALL of them separately. 
+- Extract the code snippet for each distinct approach and present it cleanly without the comment symbols (unless the comments are inline explanations).
+- Explain the intuition, approach, code analysis, and complexity for each distinct approach.
+- If there is only one approach, just explain that one.
 
-Format required:
+Format it EXACTLY like this structure, using a professional, clear, conversational tone.
+
 # 🛍️ ${problemName} | Explained
 
-## Approach 1 (e.g., Optimized)
+## Approach 1: [Name of Approach]
 ### Intuition
 [Explain the core idea using a real-world analogy. Why does this approach work?]
+### Algorithm Visualized
+\`\`\`mermaid
+[If applicable, create a Mermaid.js diagram (e.g., flowchart, state diagram, or graph) that visually maps out the algorithmic logic, pointer movements, or data structure transformations. Ensure the syntax is valid GitHub Mermaid markdown.]
+\`\`\`
 ### Approach
 [Step-by-step algorithmic breakdown. High level logic flow.]
 ### Detailed Code Analysis
-[Deep dive into the code block. Explain EXACTLY what the code is doing line-by-line or block-by-block. Explain why specific data structures were chosen, what key variables represent, and map the algorithmic steps directly to the code.]
+[Deep dive into the code block. Explain EXACTLY what the code is doing line-by-line or block-by-block. Explain why specific data structures were chosen and map the algorithmic steps directly to the code.]
 ### Code
-\`\`\`
-[Insert the specific code snippet for this approach here]
+\`\`\`[language_name]
+[Insert the specific, clean code snippet for this approach here]
 \`\`\`
 ### Complexity
-- Time: [Detailed time complexity analysis]
-- Space: [Detailed space complexity analysis]
+- **Time:** [Detailed time complexity analysis]
+- **Space:** [Detailed space complexity analysis]
 
-## Approach 2 (If applicable)
+## Approach 2: [Name of Approach] (If applicable)
 [If applicable, document the next approach in the exact same structure. Repeat for as many approaches as found in the code.]
 
 ## 🕵️‍♂️ Follow-up Questions (Optional)
 [If applicable, what are 1-2 common interviewer follow-up questions for this pattern and brief answers]
-${customPrompt ? `\\nUser's custom instructions for the explanation:\\n${customPrompt}\\n` : ""}
+
+CONSTRAINTS:
+- OUTPUT ONLY THE RAW MARKDOWN. 
+- DO NOT wrap your response in an overarching markdown code block.
+- DO NOT include any conversational filler (e.g., "Here is the explanation..."). Start immediately with the title heading.
 `;
 
     try {

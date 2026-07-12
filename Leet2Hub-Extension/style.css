@@ -506,3 +506,73 @@
   }
 }
 
+/* AI Provider Cards */
+.lp-ai-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.lp-ai-card {
+  display: block;
+  cursor: pointer;
+  position: relative;
+}
+
+.lp-ai-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.lp-ai-card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+}
+
+.lp-ai-icon {
+  width: 24px;
+  height: 24px;
+  color: #999;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lp-ai-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-ai-card-text h4 {
+  margin: 0;
+  font-size: 13px;
+  color: #e0e0e0;
+  font-weight: 600;
+}
+
+.lp-ai-card-text p {
+  margin: 0;
+  font-size: 11px;
+  color: #999;
+}
+
+.lp-ai-card:hover .lp-ai-card-content {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.lp-ai-card input[type="radio"]:checked + .lp-ai-card-content {
+  border-color: #ffa116;
+  background-color: rgba(255, 161, 22, 0.08);
+}
+
+.lp-ai-card input[type="radio"]:checked + .lp-ai-card-content .lp-ai-icon {
+  color: #ffa116;
+}
