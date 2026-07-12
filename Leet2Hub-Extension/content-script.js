@@ -751,83 +751,6 @@
               </button>
             </div>
           </div>
-          <div class="lp-info-box mt-auto">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            <p>Your accepted solutions will be automatically pushed to this repository. Make sure the branch <strong>main</strong> exists.</p>
-          </div>
-        </div>
-
-        <div class="lp-section">
-          <div class="lp-section-title">AI Explanations</div>
-          <div class="lp-div">
-            <label>AI Provider:</label>
-            <div class="lp-ai-cards-grid">
-              <label class="lp-ai-card">
-                <input type="radio" name="ai-provider" value="gemini" checked>
-                <div class="lp-ai-card-content">
-                  <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" fill="currentColor"/>
-                  </svg>
-                  <div class="lp-ai-card-text">
-                    <h4>Google Gemini</h4>
-                    <p>1.5 Flash (Default)</p>
-                  </div>
-                </div>
-              </label>
-
-              <label class="lp-ai-card">
-                <input type="radio" name="ai-provider" value="groq">
-                <div class="lp-ai-card-content">
-                  <svg class="lp-ai-icon" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M105.304012.00401184C47.7040118-.49598816.50401184 45.8040118.00401184 103.404012c-.5 57.6 45.79999996 104.8 103.40000016 105.3h36.2v-39.1h-34.3c-36.0000002.4-65.6000002-28.4-66.0000002-64.5-.4-36.1000002 28.4-65.6000002 64.5000002-66.0000002h1.5c36 0 65.2 29.2 65.4 65.2000002v96.1c0 35.7-29.1 64.8-64.7 65.2-17.1000002-.1-33.4000002-7-45.4000002-19.1l-27.7 27.7c19.2 19.3 45.2 30.3 72.4000002 30.5h1.4c56.9-.8 102.6-47 102.9-103.9v-99.1c-1.4-56.5000002-47.7-101.60000016-104.3-101.70000016Z" fill="currentColor"/>
-                  </svg>
-                  <div class="lp-ai-card-text">
-                    <h4>Groq (Llama 3)</h4>
-                    <p>Lightning fast</p>
-                  </div>
-                </div>
-              </label>
-
-              <label class="lp-ai-card">
-                <input type="radio" name="ai-provider" value="claude">
-                <div class="lp-ai-card-content">
-                  <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
-                  </svg>
-                  <div class="lp-ai-card-text">
-                    <h4>Anthropic Claude</h4>
-                    <p>3.5 Sonnet</p>
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-          <div class="lp-div">
-            <label>API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link" class="lp-link-blue">Get Key</a></label>
-            <div class="lp-password-wrapper">
-              <input type="password" id="api-key" name="api-key" placeholder="API Key...">
-              <button type="button" class="lp-toggle-password" data-target="api-key" title="Toggle visibility">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="lp-div">
-            <label>Generate AI README.md:</label>
-            <div class="lp-radios-group">
-              <label class="lp-radio-label">
-                <input type="radio" id="ai-generate-yes" name="ai-generate" value="yes" checked>
-                <span class="lp-radio-custom">Yes</span>
-              </label>
-              <label class="lp-radio-label">
-                <input type="radio" id="ai-generate-no" name="ai-generate" value="no">
-                <span class="lp-radio-custom">No</span>
-              </label>
-            </div>
-          </div>
-          <div class="lp-div">
-            <label>Custom AI Prompt (Optional):</label>
-            <textarea id="ai-prompt" name="ai-prompt" class="lp-textarea" placeholder="E.g., Explain this as if I'm 5 years old..."></textarea>
-          </div>
         </div>
 
         <div class="lp-section">
@@ -862,9 +785,87 @@
               <input type="text" id="shortcut-key" maxlength="1" placeholder="Key">
             </div>
           </div>
-          <div class="lp-info-box mt-auto">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-            <p>Customize shortcuts and folder structures to keep your GitHub repository clean and organized exactly how you like it.</p>
+        </div>
+
+        <div class="lp-section">
+          <div class="lp-section-title">AI Explanations</div>
+          <div class="ai-settings-grid">
+            
+            <!-- Row 1 Left: Generate Toggle -->
+            <div class="lp-div" style="margin-bottom: 0;">
+              <label>Generate AI README.md:</label>
+              <div class="lp-radios-group" style="flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 12px;">
+                <label class="lp-radio-label">
+                  <input type="radio" id="ai-generate-yes" name="ai-generate" value="yes" checked>
+                  <span class="lp-radio-custom">Yes</span>
+                </label>
+                <label class="lp-radio-label">
+                  <input type="radio" id="ai-generate-no" name="ai-generate" value="no">
+                  <span class="lp-radio-custom">No</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Row 1 Right: AI Providers -->
+            <div class="lp-div" style="margin-bottom: 0;">
+              <label>AI Provider:</label>
+              <div class="lp-ai-cards-grid" style="margin-top: 8px;">
+                <label class="lp-ai-card">
+                  <input type="radio" name="ai-provider" value="gemini" checked>
+                  <div class="lp-ai-card-content">
+                    <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" fill="currentColor"/>
+                    </svg>
+                    <div class="lp-ai-card-text">
+                      <h4>Google Gemini</h4>
+                      <p>1.5 Flash (Default)</p>
+                    </div>
+                  </div>
+                </label>
+                <label class="lp-ai-card">
+                  <input type="radio" name="ai-provider" value="groq">
+                  <div class="lp-ai-card-content">
+                    <svg class="lp-ai-icon" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M105.304012.00401184C47.7040118-.49598816.50401184 45.8040118.00401184 103.404012c-.5 57.6 45.79999996 104.8 103.40000016 105.3h36.2v-39.1h-34.3c-36.0000002.4-65.6000002-28.4-66.0000002-64.5-.4-36.1000002 28.4-65.6000002 64.5000002-66.0000002h1.5c36 0 65.2 29.2 65.4 65.2000002v96.1c0 35.7-29.1 64.8-64.7 65.2-17.1000002-.1-33.4000002-7-45.4000002-19.1l-27.7 27.7c19.2 19.3 45.2 30.3 72.4000002 30.5h1.4c56.9-.8 102.6-47 102.9-103.9v-99.1c-1.4-56.5000002-47.7-101.60000016-104.3-101.70000016Z" fill="currentColor"/>
+                    </svg>
+                    <div class="lp-ai-card-text">
+                      <h4>Groq (Llama 3)</h4>
+                      <p>Lightning fast</p>
+                    </div>
+                  </div>
+                </label>
+                <label class="lp-ai-card">
+                  <input type="radio" name="ai-provider" value="claude">
+                  <div class="lp-ai-card-content">
+                    <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
+                    </svg>
+                    <div class="lp-ai-card-text">
+                      <h4>Anthropic Claude</h4>
+                      <p>3.5 Sonnet</p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Row 2 Left: API Key -->
+            <div class="lp-div" style="margin-bottom: 0;">
+              <label>API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link" class="lp-link-blue">Get Key</a></label>
+              <div class="lp-password-wrapper">
+                <input type="password" id="api-key" name="api-key" placeholder="API Key...">
+                <button type="button" class="lp-toggle-password" data-target="api-key" title="Toggle visibility">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row 2 Right: Custom Prompt -->
+            <div class="lp-div" style="margin-bottom: 0; height: 100%;">
+              <label>Custom AI Prompt (Optional):</label>
+              <textarea id="ai-prompt" name="ai-prompt" class="lp-textarea" placeholder="E.g., Explain this as if I'm 5 years old..." style="height: calc(100% - 24px);"></textarea>
+            </div>
+
           </div>
         </div>
 
