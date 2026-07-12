@@ -8,12 +8,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.2.2-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.4.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Extension">
-  <img src="https://img.shields.io/badge/Gemini_1.5_Flash-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini AI">
+  <img src="https://img.shields.io/badge/Multi--AI_Support-8E75B2?style=for-the-badge&logo=openai&logoColor=white" alt="Multi AI">
 </p>
 
 ---
@@ -22,13 +22,13 @@
 
 **Leet2Hub** bridges the gap between solving Data Structures and Algorithms on LeetCode and building a professional GitHub portfolio. This Chrome Extension eliminates the manual process of copying, pasting, organizing, and formatting your code.
 
-Upon solving a problem, Leet2Hub automatically pushes your code, execution time, and memory metrics to a designated GitHub repository. Furthermore, it integrates with the **Google Gemini 1.5 Flash API** to generate a comprehensive Markdown `README.md` that explains your algorithm's Intuition, Approach, and Complexity Analysis.
+Upon solving a problem, Leet2Hub automatically pushes your code, execution time, and memory metrics to a designated GitHub repository. Furthermore, it integrates natively with multiple AI providers (**Google Gemini, Groq, and Anthropic**) to generate a comprehensive Markdown `README.md` that explains your algorithm's Intuition, Approach, and Complexity Analysis.
 
 ---
 
 ## Key Features
 
-*   **AI-Generated Solutions (Upgraded):** Powered by the Google Gemini 1.5 Flash API. Leet2Hub processes your code and automatically generates a detailed Markdown `README.md` containing algorithmic insights for every problem you push.
+*   **AI-Generated Solutions (Multi-Provider):** Powered by your choice of **Google Gemini, Groq (Llama 3), or Anthropic (Claude 3.5)**. Leet2Hub processes your code and automatically generates a detailed Markdown `README.md` containing algorithmic insights for every problem you push.
 *   **Interactive Dashboard:** A modern popup dashboard to track your Daily Streak, Total Problems Solved, Difficulty Breakdown, and the active Daily Challenge.
 *   **DSA Folder Auto-Categorization:** Fetches problem tags via LeetCode's GraphQL API and automatically routes your code to specific topic directories (e.g., `01-Arrays-and-Hashing`, `09-Trees`).
 *   **Smart Packaging:** Creates a dedicated sub-directory for every problem containing both your source code and the AI-generated explanation.
@@ -49,7 +49,7 @@ sequenceDiagram
     participant User as You (LeetCode)
     participant L2H as Leet2Hub Chrome Extension
     participant LC as LeetCode GraphQL
-    participant Gemini as Google Gemini 1.5 Flash
+    participant Gemini as AI Provider (Gemini/Groq/Claude)
     participant GH as GitHub REST API
 
     User->>L2H: Submits Accepted Code & Clicks "Push"
@@ -98,7 +98,7 @@ graph LR
 5.  **Enter Credentials**: 
     *   **GitHub Repository URL**: Link to your target repository (e.g., `https://github.com/anuj-er/LeetCode-Solutions`).
     *   **Personal Access Token**: A Classic token with the `repo` scope.
-6.  **Configure AI (Optional)**: Provide your **Google Gemini API Key** and toggle "Generate AI Explanation" to **yes**.
+6.  **Configure AI (Optional)**: Choose your preferred AI provider (Gemini, Groq, or Anthropic), provide the respective API Key, and toggle "Generate AI Explanation" to **yes**.
 
 ---
 
