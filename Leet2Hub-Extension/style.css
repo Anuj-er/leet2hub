@@ -207,7 +207,7 @@
 }
 
 #lp-container {
-  width: 860px;
+  width: 940px;
   max-height: 90vh;
   overflow-y: auto;
   background-color: rgba(30, 30, 30, 0.6);
@@ -271,8 +271,8 @@
 
 #lp-form {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
   align-items: start;
 }
 
@@ -630,4 +630,33 @@
 
 .lp-link-blue:hover {
   color: #60a5fa !important;
+}
+
+.lp-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.lp-info-box svg {
+  color: #3b82f6;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.lp-info-box p {
+  margin: 0;
+  color: #d4d4d8;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.mt-auto {
+  margin-top: auto;
 }
