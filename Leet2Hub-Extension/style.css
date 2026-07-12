@@ -216,7 +216,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
   border-radius: 1.25rem;
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: 1rem 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -259,10 +259,12 @@
 #lp-container h3 {
   color: white;
   text-align: center;
-  font-size: 24px;
+  font-size: 28px;
   padding-bottom: 0.5rem;
   font-weight: bold;
   margin-top: 0;
+  display: flex;
+  align-items: center;
 }
 
 #lp-container h3 span {
@@ -273,8 +275,8 @@
   display: grid;
   grid-template-columns: 170px 1fr;
   grid-template-rows: auto auto;
-  gap: 1.25rem 1.5rem;
-  margin-top: 10px;
+  gap: 1rem 1.5rem;
+  margin-top: 8px;
   position: relative;
 }
 
@@ -291,7 +293,7 @@
 #lp-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+  gap: 1rem;
   align-items: start;
 }
 
@@ -303,21 +305,21 @@
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  padding: 0.8rem;
+  padding: 0.75rem;
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   height: 100%;
 }
 
 .lp-section-title {
   color: #ffa116;
-  font-size: 11px;
+  font-size: 13px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
-  margin-bottom: -4px;
+  margin-bottom: 0px;
 }
 
 .lp-div {
@@ -411,7 +413,7 @@
   height: 36px;
   color: #070706;
   transition: background-color 0.2s ease;
-  margin: 0.5rem auto 0 auto;
+  margin: 0.25rem auto 0 auto;
   width: 50%;
   max-width: 300px;
 }
@@ -444,7 +446,7 @@
 
 #shortcut-key, #shortcut-modifier, .lp-select, .lp-textarea {
   border-radius: 6px;
-  padding: 0.6rem 0.8rem;
+  padding: 0.35rem 0.8rem;
   border: 1px solid rgba(255, 255, 255, 0.15);
   outline: none;
   background-color: rgba(255, 255, 255, 0.05);
@@ -535,7 +537,7 @@
 .lp-ai-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: 0.4rem;
   margin-top: 0.25rem;
 }
 
@@ -570,8 +572,8 @@
 }
 
 .lp-ai-icon {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   color: #999;
   transition: color 0.2s ease;
   flex-shrink: 0;

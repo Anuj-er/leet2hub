@@ -731,7 +731,7 @@
     <div id="lp-container">
       <div id="lp-close-btn"><button>×</button></div>
       <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px;">
-        <img src="${chrome.runtime.getURL('images/logo.png')}" alt="Leet2Hub Logo" style="width: 32px; height: 32px; border-radius: 8px; object-fit: contain;">
+        <img src="${chrome.runtime.getURL('images/logo.png')}" alt="Leet2Hub Logo" style="width: 44px; height: 44px; border-radius: 8px; object-fit: contain;">
         <h3 style="margin: 0;">Leet2<span>Hub</span></h3>
       </div>
       <form id="lp-form">
@@ -759,30 +759,34 @@
             <label>Target directory push:</label>
             <input type="text" id="custom-dir" name="custom-dir" placeholder="Leave empty for root/DSA categorization">
           </div>
-          <div class="lp-div">
-            <label>Daily problems on a separate folder:</label>
-            <div class="lp-radios-group">
-              <label class="lp-radio-label">
-                <input type="radio" id="separate-folder-yes" name="daily-challenge" value="yes">
-                <span class="lp-radio-custom">Yes</span>
-              </label>
-              <label class="lp-radio-label">
-                <input type="radio" id="separate-folder-no" name="daily-challenge" value="no" checked>
-                <span class="lp-radio-custom">No</span>
-              </label>
+          <div style="display: flex; align-items: flex-start; position: relative;">
+            <div class="lp-div" style="flex: 1; margin-bottom: 0; padding-right: 1.5rem; border-right: 1px solid rgba(255, 255, 255, 0.1);">
+              <label>Daily problems on a separate folder:</label>
+              <div class="lp-radios-group" style="margin-top: 10px;">
+                <label class="lp-radio-label">
+                  <input type="radio" id="separate-folder-yes" name="daily-challenge" value="yes">
+                  <span class="lp-radio-custom">Yes</span>
+                </label>
+                <label class="lp-radio-label">
+                  <input type="radio" id="separate-folder-no" name="daily-challenge" value="no" checked>
+                  <span class="lp-radio-custom">No</span>
+                </label>
+              </div>
             </div>
-          </div>
-          <div class="lp-keyboard-shortcut">
-            <label>Keyboard shortcut:</label>
-            <div class="shortcut-config">
-              <select id="shortcut-modifier">
-                <option value="meta">${isMac ? "⌘ Command" : "⊞ Windows"}</option>
-                <option value="ctrl">Ctrl</option>
-                <option value="alt">${isMac ? "⌥ Option" : "Alt"}</option>
-                <option value="shift">⇧ Shift</option>
-              </select>
-              <span>+</span>
-              <input type="text" id="shortcut-key" maxlength="1" placeholder="Key">
+            <div class="lp-keyboard-shortcut" style="flex: 1; padding-left: 1.5rem;">
+              <label>Keyboard shortcut:</label>
+              <div class="shortcut-config" style="margin-top: 10px; gap: 8px;">
+                <div style="position: relative; display: inline-block;">
+                  <select id="shortcut-modifier" style="min-width: 44px; width: 44px; text-align: center; text-align-last: center; padding: 0.35rem 0; appearance: none; -webkit-appearance: none;">
+                    <option value="meta">${isMac ? "⌘" : "⊞"}</option>
+                    <option value="ctrl">${isMac ? "⌃" : "Ctrl"}</option>
+                    <option value="alt">${isMac ? "⌥" : "Alt"}</option>
+                    <option value="shift">${isMac ? "⇧" : "Shift"}</option>
+                  </select>
+                </div>
+                <span style="color: rgba(255,255,255,0.4); font-weight: bold; display: inline-block;">+</span>
+                <input type="text" id="shortcut-key" maxlength="1" placeholder="K" style="min-width: 44px; width: 44px; text-align: center; padding: 0.35rem 0;">
+              </div>
             </div>
           </div>
         </div>
@@ -794,7 +798,7 @@
             <!-- Row 1 Left: Generate Toggle -->
             <div class="lp-div" style="margin-bottom: 0;">
               <label>Generate AI README.md:</label>
-              <div class="lp-radios-group" style="flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 12px;">
+              <div class="lp-radios-group" style="margin-top: 10px;">
                 <label class="lp-radio-label">
                   <input type="radio" id="ai-generate-yes" name="ai-generate" value="yes" checked>
                   <span class="lp-radio-custom">Yes</span>
@@ -809,42 +813,33 @@
             <!-- Row 1 Right: AI Providers -->
             <div class="lp-div" style="margin-bottom: 0;">
               <label>AI Provider:</label>
-              <div class="lp-ai-cards-grid" style="margin-top: 8px;">
-                <label class="lp-ai-card">
+              <div class="lp-radios-group" style="margin-top: 10px; gap: 12px; flex-wrap: wrap;">
+                <label class="lp-radio-label">
                   <input type="radio" name="ai-provider" value="gemini" checked>
-                  <div class="lp-ai-card-content">
-                    <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 6px; padding: 6px 16px;">
+                    <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" fill="currentColor"/>
                     </svg>
-                    <div class="lp-ai-card-text">
-                      <h4>Google Gemini</h4>
-                      <p>1.5 Flash (Default)</p>
-                    </div>
-                  </div>
+                    Google Gemini
+                  </span>
                 </label>
-                <label class="lp-ai-card">
+                <label class="lp-radio-label">
                   <input type="radio" name="ai-provider" value="groq">
-                  <div class="lp-ai-card-content">
-                    <svg class="lp-ai-icon" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 6px; padding: 6px 16px;">
+                    <svg style="width: 14px; height: 14px;" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M105.304012.00401184C47.7040118-.49598816.50401184 45.8040118.00401184 103.404012c-.5 57.6 45.79999996 104.8 103.40000016 105.3h36.2v-39.1h-34.3c-36.0000002.4-65.6000002-28.4-66.0000002-64.5-.4-36.1000002 28.4-65.6000002 64.5000002-66.0000002h1.5c36 0 65.2 29.2 65.4 65.2000002v96.1c0 35.7-29.1 64.8-64.7 65.2-17.1000002-.1-33.4000002-7-45.4000002-19.1l-27.7 27.7c19.2 19.3 45.2 30.3 72.4000002 30.5h1.4c56.9-.8 102.6-47 102.9-103.9v-99.1c-1.4-56.5000002-47.7-101.60000016-104.3-101.70000016Z" fill="currentColor"/>
                     </svg>
-                    <div class="lp-ai-card-text">
-                      <h4>Groq (Llama 3)</h4>
-                      <p>Lightning fast</p>
-                    </div>
-                  </div>
+                    Groq (Llama 3)
+                  </span>
                 </label>
-                <label class="lp-ai-card">
+                <label class="lp-radio-label">
                   <input type="radio" name="ai-provider" value="claude">
-                  <div class="lp-ai-card-content">
-                    <svg class="lp-ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 6px; padding: 6px 16px;">
+                    <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
                     </svg>
-                    <div class="lp-ai-card-text">
-                      <h4>Anthropic Claude</h4>
-                      <p>3.5 Sonnet</p>
-                    </div>
-                  </div>
+                    Anthropic Claude
+                  </span>
                 </label>
               </div>
             </div>
