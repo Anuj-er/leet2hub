@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="banner.png" alt="Leet2Hub Banner" width="100%" />
+  <img src="screenshots/01_Hero_One_Click_Sync.png" alt="Leet2Hub Banner" width="100%" />
 </div>
 
 

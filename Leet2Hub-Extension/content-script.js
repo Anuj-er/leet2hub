@@ -188,8 +188,20 @@
         styleEl.textContent = `
           /* Premium link next to profile */
           a[href*="/subscribe"],
+          a[href*="/premium"],
+          a[href*="/payment"],
           div:has(> a[href*="/subscribe"]),
+          div:has(> a[href*="/premium"]),
           .lc-lg\\:inline-block:has(a[href*="/subscribe"]),
+          
+          /* Submission tab banner (Aggressive) */
+          a:has(img[src*="assets.leetcode.com/users/images/"]),
+          a:has(img[alt="1024"]),
+          a:has(img[class*="h-[60px]"]),
+          a.bg-fill-3.dark\\:bg-dark-fill-3:has(img),
+          a[href*="/subscription"],
+          a[href*="/student"],
+          a.bg-fill-3:has(.w-0.grow),
           
           /* The exact wrapper for the Premium button */
           div:has(> a > span > span.text-brand-orange) {
@@ -589,7 +601,6 @@
       let solution = "";
 
       // Fallback 1: Next.js state (Perfect for submissions tab)
-      const nextDataScript = document.getElementById('__NEXT_DATA__');
       if (nextDataScript) {
         try {
           const dataStr = nextDataScript.textContent;
