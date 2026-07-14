@@ -40,6 +40,20 @@ Upon solving a problem, Leet2Hub automatically pushes your code, execution time,
 
 ---
 
+## Visual Showcase
+
+<div align="center">
+  <img src="screenshots/02_Smart_Auto_Categorization.png" alt="Smart Auto-Categorization" width="80%" />
+  <br/><br/>
+  <img src="screenshots/03_AI_Powered_READMEs.png" alt="AI-Powered READMEs" width="80%" />
+  <br/><br/>
+  <img src="screenshots/04_Visual_Analytics_Dashboard.png" alt="Interactive Dashboard" width="80%" />
+  <br/><br/>
+  <img src="screenshots/05_Distraction_Free_UI.png" alt="Distraction-Free UI" width="80%" />
+</div>
+
+---
+
 ## System Architecture Workflow
 
 Leet2Hub operates entirely on the client side without requiring an intermediate server to synchronize your code to GitHub.
