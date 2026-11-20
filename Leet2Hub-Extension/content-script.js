@@ -878,10 +878,17 @@
               </div>
             </div>
 
-            <!-- Row 2 Right: Custom Prompt -->
-            <div class="lp-div" style="margin-bottom: 0; height: 100%;">
+            <!-- Row 2 Right: Custom Model -->
+            <div class="lp-div" style="margin-bottom: 0;">
+              <label>Custom Model <span style="opacity: 0.5; font-weight: normal;">(Optional)</span>:</label>
+              <input type="text" id="ai-model" name="ai-model" placeholder="" style="font-family: monospace; font-size: 12px;">
+              <span id="ai-model-hint" style="display: block; margin-top: 4px; font-size: 10px; opacity: 0.45;">Default: gemini-flash-latest</span>
+            </div>
+
+            <!-- Row 3: Custom Prompt (full width) -->
+            <div class="lp-div" style="margin-bottom: 0; grid-column: 1 / -1;">
               <label>Custom AI Prompt (Optional):</label>
-              <textarea id="ai-prompt" name="ai-prompt" class="lp-textarea" placeholder="E.g., Explain this as if I'm 5 years old..." style="height: calc(100% - 24px);"></textarea>
+              <textarea id="ai-prompt" name="ai-prompt" class="lp-textarea" placeholder="E.g., Explain this as if I'm 5 years old..." style="height: 60px;"></textarea>
             </div>
 
           </div>
@@ -919,15 +926,23 @@
       aiProviderInputs.forEach(input => {
         input.addEventListener("change", (e) => {
           const apiKeyInput = modal.querySelector("#api-key");
+          const aiModelInput = modal.querySelector("#ai-model");
+          const aiModelHint = modal.querySelector("#ai-model-hint");
           if (e.target.value === "groq") {
             apiKeyLink.href = "https://console.groq.com/keys";
             if (apiKeyInput) apiKeyInput.placeholder = "Groq API Key...";
+            if (aiModelInput) aiModelInput.placeholder = "openai/gpt-oss-120b";
+            if (aiModelHint) aiModelHint.textContent = "Default: openai/gpt-oss-120b";
           } else if (e.target.value === "claude") {
             apiKeyLink.href = "https://console.anthropic.com/settings/keys";
             if (apiKeyInput) apiKeyInput.placeholder = "Anthropic API Key...";
+            if (aiModelInput) aiModelInput.placeholder = "claude-3-5-sonnet-20241022";
+            if (aiModelHint) aiModelHint.textContent = "Default: claude-3-5-sonnet-20241022";
           } else {
             apiKeyLink.href = "https://aistudio.google.com/app/apikey";
             if (apiKeyInput) apiKeyInput.placeholder = "Gemini API Key...";
+            if (aiModelInput) aiModelInput.placeholder = "gemini-flash-latest";
+            if (aiModelHint) aiModelHint.textContent = "Default: gemini-flash-latest";
           }
         });
       });
@@ -965,6 +980,7 @@
     const apiKeyInput = modal.querySelector("#api-key")
     const aiProviderInput = modal.querySelector('input[name="ai-provider"]:checked')
     const aiPromptInput = modal.querySelector("#ai-prompt")
+    const aiModelInput = modal.querySelector("#ai-model")
 
     if (!repoUrlInput || !tokenInput || !separateFolderInput) return
 
@@ -991,6 +1007,7 @@
     const apiKey = apiKeyInput?.value || ""
     const aiProvider = aiProviderInput?.value || "gemini"
     const aiPrompt = aiPromptInput?.value || ""
+    const aiModel = aiModelInput?.value || ""
 
     // Save shortcut if provided
     if (shortcutModifierInput && shortcutKeyInput && shortcutKeyInput.value) {
@@ -1031,7 +1048,8 @@
       "custom-dir": customDir,
       "api-key": apiKey,
       "ai-provider": aiProvider,
-      "ai-prompt": aiPrompt
+      "ai-prompt": aiPrompt,
+      "ai-model": aiModel
     });
 
     document.body.removeChild(modal)
@@ -1072,7 +1090,7 @@
 
     // Pre-fill with existing values if available
     const data = await storageGet([
-      "token", "repo", "separate-folder", "ai-generate", "custom-dir", "api-key", "gemini-key", "ai-provider", "ai-prompt"
+      "token", "repo", "separate-folder", "ai-generate", "custom-dir", "api-key", "gemini-key", "ai-provider", "ai-prompt", "ai-model"
     ]);
 
     const token = data["token"];
@@ -1083,6 +1101,7 @@
     const apiKey = data["api-key"] || data["gemini-key"]; // fallback
     const aiProvider = data["ai-provider"] || "gemini";
     const aiPrompt = data["ai-prompt"] || "";
+    const aiModel = data["ai-model"] || "";
 
     // Pre-fill shortcut values
     const shortcutModifierInput = modal.querySelector("#shortcut-modifier")
@@ -1103,6 +1122,7 @@
     if (customDir) modal.querySelector("#custom-dir").value = customDir
     if (apiKey) modal.querySelector("#api-key").value = apiKey
     if (aiPrompt) modal.querySelector("#ai-prompt").value = aiPrompt
+    if (aiModel) modal.querySelector("#ai-model").value = aiModel
     if (aiProvider) {
       const providerRadio = modal.querySelector(`input[name="ai-provider"][value="${aiProvider}"]`);
       if (providerRadio) {
@@ -1280,7 +1300,7 @@
 
   async function getGithubConfig() {
     const data = await storageGet([
-      "repo", "token", "separate-folder", "ai-generate", "custom-dir", "api-key", "gemini-key", "ai-provider", "ai-prompt"
+      "repo", "token", "separate-folder", "ai-generate", "custom-dir", "api-key", "gemini-key", "ai-provider", "ai-prompt", "ai-model"
     ]);
     return {
       repo: data["repo"] || "",
@@ -1292,6 +1312,7 @@
       apiKey: data["api-key"] || data["gemini-key"] || "",
       aiProvider: data["ai-provider"] || "gemini",
       aiPrompt: data["ai-prompt"] || "",
+      aiModel: data["ai-model"] || "",
     }
   }
 
@@ -1384,7 +1405,7 @@
         } else {
           try {
             console.log("Generating AI Explanation...");
-            const aiExplanation = await generateAIExplanation(solution, probName, config.apiKey, config.aiProvider, config.aiPrompt);
+            const aiExplanation = await generateAIExplanation(solution, probName, config.apiKey, config.aiProvider, config.aiPrompt, config.aiModel);
             
             // Combine Problem Description and AI Explanation
             const problemUrl = `https://leetcode.com/problems/${titleSlug}`;
@@ -1688,7 +1709,7 @@
     return "";
   }
 
-  async function generateAIExplanation(code, problemName, apiKey, aiProvider, customPrompt) {
+  async function generateAIExplanation(code, problemName, apiKey, aiProvider, customPrompt, customModel) {
     const prompt = `
 You are an expert Senior Software Engineer conducting a deep-dive code review. I have just solved the LeetCode problem "${problemName}".
 ${customPrompt ? `\nCRITICAL USER INSTRUCTIONS:\nThe user has provided specific custom instructions that MUST be prioritized:\n"${customPrompt}"\n\n` : ""}
@@ -1750,7 +1771,7 @@ CONSTRAINTS:
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "openai/gpt-oss-120b",
+            model: customModel || "openai/gpt-oss-120b",
             messages: [{ role: "user", content: prompt }]
           })
         });
@@ -1767,7 +1788,7 @@ CONSTRAINTS:
             "anthropic-dangerous-direct-browser-access": "true"
           },
           body: JSON.stringify({
-            model: "claude-3-5-sonnet-20241022",
+            model: customModel || "claude-3-5-sonnet-20241022",
             max_tokens: 4000,
             messages: [{ role: "user", content: prompt }]
           })
@@ -1776,7 +1797,8 @@ CONSTRAINTS:
         if (data.error) throw new Error(data.error.message);
         return data.content?.[0]?.text || "Failed to generate explanation.";
       } else {
-        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
+        const geminiModel = customModel || "gemini-flash-latest";
+        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

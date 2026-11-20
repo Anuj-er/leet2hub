@@ -13,7 +13,8 @@ export default function ResetGithubButton({ onReset }: { onReset: () => void }) 
           "custom-dir",
           "api-key",
           "ai-provider",
-          "ai-prompt"
+          "ai-prompt",
+          "ai-model"
         ], () => {
           onReset();
         });
