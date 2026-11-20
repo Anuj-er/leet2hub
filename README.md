@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.4.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.5.0-ffa116?style=for-the-badge&logo=leetcode&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
@@ -28,7 +28,7 @@ Upon solving a problem, Leet2Hub automatically pushes your code, execution time,
 
 ## Key Features
 
-*   **AI-Generated Solutions (Multi-Provider):** Powered by your choice of **Google Gemini, Groq (GPT-OSS), or Anthropic (Claude 3.5)**. Leet2Hub processes your code and automatically generates a detailed Markdown `README.md` containing algorithmic insights for every problem you push.
+*   **AI-Generated Solutions (Multi-Provider & Custom Models):** Powered by your choice of **Google Gemini, Groq (GPT-OSS), or Anthropic (Claude 3.5)** with full support for **Custom Model ID overrides** in the configuration modal. If an upstream model is deprecated or updated, you can provide any valid model identifier directly without waiting for extension updates. Leet2Hub processes your code and automatically generates a detailed Markdown `README.md` containing algorithmic insights for every problem you push.
 *   **Interactive Dashboard:** A modern popup dashboard to track your Daily Streak, Total Problems Solved, Difficulty Breakdown, and the active Daily Challenge.
 *   **DSA Folder Auto-Categorization:** Fetches problem tags via LeetCode's GraphQL API and automatically routes your code to specific topic directories (e.g., `01-Arrays-and-Hashing`, `09-Trees`).
 *   **Smart Packaging:** Creates a dedicated sub-directory for every problem containing both your source code and the AI-generated explanation.
