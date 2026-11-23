@@ -766,7 +766,7 @@
             <input type="text" id="repo-url" name="repo-url" placeholder="https://github.com/username/repository" required>
           </div>
           <div class="lp-div">
-            <label>GitHub Token: <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic" target="_blank" class="lp-link-blue">Generate Token?</a></label>
+            <label class="lp-label-with-link">GitHub Token: <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic" target="_blank" class="lp-link-blue">Generate Token?</a></label>
             <div class="lp-password-wrapper">
               <input type="password" id="token" name="token" placeholder="ghp_..." required>
               <button type="button" class="lp-toggle-password" data-target="token" title="Toggle visibility">
@@ -816,12 +816,14 @@
 
         <div class="lp-section">
           <div class="lp-section-title">AI Explanations</div>
-          <div class="ai-settings-grid">
-            
+          <div style="display: grid; grid-template-columns: auto 1fr; gap: 8px 1.5rem; align-items: start; position: relative;">
+            <!-- Vertical divider -->
+            <div style="position: absolute; left: calc(170px + 0.75rem); top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.1);"></div>
+
             <!-- Row 1 Left: Generate Toggle -->
-            <div class="lp-div" style="margin-bottom: 0;">
+            <div class="lp-div" style="margin-bottom: 0; width: 170px;">
               <label>Generate AI README.md:</label>
-              <div class="lp-radios-group" style="margin-top: 10px;">
+              <div class="lp-radios-group" style="margin-top: 6px;">
                 <label class="lp-radio-label">
                   <input type="radio" id="ai-generate-yes" name="ai-generate" value="yes" checked>
                   <span class="lp-radio-custom">Yes</span>
@@ -833,64 +835,64 @@
               </div>
             </div>
 
-            <!-- Row 1 Right: AI Providers -->
+            <!-- Row 1 Right: Provider + Custom Model -->
             <div class="lp-div" style="margin-bottom: 0;">
-              <label>AI Provider:</label>
-              <div class="lp-radios-group" style="margin-top: 10px; gap: 12px; flex-wrap: wrap;">
-                <label class="lp-radio-label">
-                  <input type="radio" name="ai-provider" value="gemini" checked>
-                  <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 6px; padding: 6px 16px;">
-                    <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" fill="currentColor"/>
-                    </svg>
-                    Google Gemini
-                  </span>
-                </label>
-                <label class="lp-radio-label">
-                  <input type="radio" name="ai-provider" value="groq">
-                  <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 6px; padding: 6px 16px;">
-                    <svg style="width: 14px; height: 14px;" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M105.304012.00401184C47.7040118-.49598816.50401184 45.8040118.00401184 103.404012c-.5 57.6 45.79999996 104.8 103.40000016 105.3h36.2v-39.1h-34.3c-36.0000002.4-65.6000002-28.4-66.0000002-64.5-.4-36.1000002 28.4-65.6000002 64.5000002-66.0000002h1.5c36 0 65.2 29.2 65.4 65.2000002v96.1c0 35.7-29.1 64.8-64.7 65.2-17.1000002-.1-33.4000002-7-45.4000002-19.1l-27.7 27.7c19.2 19.3 45.2 30.3 72.4000002 30.5h1.4c56.9-.8 102.6-47 102.9-103.9v-99.1c-1.4-56.5000002-47.7-101.60000016-104.3-101.70000016Z" fill="currentColor"/>
-                    </svg>
-                    Groq (GPT-OSS)
-                  </span>
-                </label>
-                <label class="lp-radio-label">
-                  <input type="radio" name="ai-provider" value="claude">
-                  <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 6px; padding: 6px 16px;">
-                    <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
-                    </svg>
-                    Anthropic Claude
-                  </span>
-                </label>
+              <div style="display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap;">
+                <div>
+                  <label>AI Provider:</label>
+                  <div class="lp-radios-group" style="margin-top: 6px; gap: 5px;">
+                    <label class="lp-radio-label">
+                      <input type="radio" name="ai-provider" value="gemini" checked>
+                      <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 4px; padding: 5px 10px; font-size: 11px;">
+                        <svg style="width: 12px; height: 12px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" fill="currentColor"/>
+                        </svg>
+                        Gemini
+                      </span>
+                    </label>
+                    <label class="lp-radio-label">
+                      <input type="radio" name="ai-provider" value="groq">
+                      <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 4px; padding: 5px 10px; font-size: 11px;">
+                        <svg style="width: 12px; height: 12px;" viewBox="0 0 209.6 304.7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M105.304012.00401184C47.7040118-.49598816.50401184 45.8040118.00401184 103.404012c-.5 57.6 45.79999996 104.8 103.40000016 105.3h36.2v-39.1h-34.3c-36.0000002.4-65.6000002-28.4-66.0000002-64.5-.4-36.1000002 28.4-65.6000002 64.5000002-66.0000002h1.5c36 0 65.2 29.2 65.4 65.2000002v96.1c0 35.7-29.1 64.8-64.7 65.2-17.1000002-.1-33.4000002-7-45.4000002-19.1l-27.7 27.7c19.2 19.3 45.2 30.3 72.4000002 30.5h1.4c56.9-.8 102.6-47 102.9-103.9v-99.1c-1.4-56.5000002-47.7-101.60000016-104.3-101.70000016Z" fill="currentColor"/>
+                        </svg>
+                        Groq
+                      </span>
+                    </label>
+                    <label class="lp-radio-label">
+                      <input type="radio" name="ai-provider" value="claude">
+                      <span class="lp-radio-custom" style="display: flex; align-items: center; gap: 4px; padding: 5px 10px; font-size: 11px;">
+                        <svg style="width: 12px; height: 12px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
+                        </svg>
+                        Claude
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label style="font-size: 11px !important; white-space: nowrap; color: rgba(255,255,255,0.6);">Custom Model <span style="opacity:0.5;">(Opt)</span>:</label>
+                  <input type="text" id="ai-model" name="ai-model" placeholder="gemini-flash-latest" style="margin-top: 4px; width: 140px; height: 28px; padding: 0.25rem 0.5rem; font-family: monospace; font-size: 11px; border-radius: 6px;">
+                </div>
               </div>
             </div>
 
             <!-- Row 2 Left: API Key -->
-            <div class="lp-div" style="margin-bottom: 0;">
-              <label>API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link" class="lp-link-blue">Get Key</a></label>
-              <div class="lp-password-wrapper">
-                <input type="password" id="api-key" name="api-key" placeholder="API Key...">
+            <div class="lp-div" style="margin-bottom: 0; width: 170px;">
+              <label class="lp-label-with-link">API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank" id="api-key-link" class="lp-link-blue">Get Key</a></label>
+              <div class="lp-password-wrapper" style="margin-top: 6px;">
+                <input type="password" id="api-key" name="api-key" placeholder="API Key..." style="height: 30px; font-size: 12px;">
                 <button type="button" class="lp-toggle-password" data-target="api-key" title="Toggle visibility">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
               </div>
             </div>
 
-            <!-- Row 2 Right: Custom Model -->
+            <!-- Row 2 Right: Custom Prompt -->
             <div class="lp-div" style="margin-bottom: 0;">
-              <label>Custom Model <span style="opacity: 0.5; font-weight: normal;">(Optional)</span>:</label>
-              <input type="text" id="ai-model" name="ai-model" placeholder="" style="font-family: monospace; font-size: 12px;">
-              <span id="ai-model-hint" style="display: block; margin-top: 4px; font-size: 10px; opacity: 0.45;">Default: gemini-flash-latest</span>
+              <label>Custom AI Prompt <span style="opacity:0.5; font-size:11px; font-weight:normal;">(Optional)</span>:</label>
+              <textarea id="ai-prompt" name="ai-prompt" class="lp-textarea" placeholder="E.g., Prioritize optimal space complexity, explain step-by-step..." style="margin-top: 6px; height: 30px; min-height: 30px; max-height: 48px; padding: 0.3rem 0.5rem; font-size: 12px; line-height: 1.35; resize: none;"></textarea>
             </div>
-
-            <!-- Row 3: Custom Prompt (full width) -->
-            <div class="lp-div" style="margin-bottom: 0; grid-column: 1 / -1;">
-              <label>Custom AI Prompt (Optional):</label>
-              <textarea id="ai-prompt" name="ai-prompt" class="lp-textarea" placeholder="E.g., Explain this as if I'm 5 years old..." style="height: 60px;"></textarea>
-            </div>
-
           </div>
         </div>
 
@@ -927,22 +929,27 @@
         input.addEventListener("change", (e) => {
           const apiKeyInput = modal.querySelector("#api-key");
           const aiModelInput = modal.querySelector("#ai-model");
-          const aiModelHint = modal.querySelector("#ai-model-hint");
           if (e.target.value === "groq") {
             apiKeyLink.href = "https://console.groq.com/keys";
             if (apiKeyInput) apiKeyInput.placeholder = "Groq API Key...";
-            if (aiModelInput) aiModelInput.placeholder = "openai/gpt-oss-120b";
-            if (aiModelHint) aiModelHint.textContent = "Default: openai/gpt-oss-120b";
+            if (aiModelInput) {
+              aiModelInput.placeholder = "openai/gpt-oss-120b";
+              aiModelInput.title = "Default: openai/gpt-oss-120b";
+            }
           } else if (e.target.value === "claude") {
             apiKeyLink.href = "https://console.anthropic.com/settings/keys";
             if (apiKeyInput) apiKeyInput.placeholder = "Anthropic API Key...";
-            if (aiModelInput) aiModelInput.placeholder = "claude-3-5-sonnet-20241022";
-            if (aiModelHint) aiModelHint.textContent = "Default: claude-3-5-sonnet-20241022";
+            if (aiModelInput) {
+              aiModelInput.placeholder = "claude-3-5-sonnet-20241022";
+              aiModelInput.title = "Default: claude-3-5-sonnet-20241022";
+            }
           } else {
             apiKeyLink.href = "https://aistudio.google.com/app/apikey";
             if (apiKeyInput) apiKeyInput.placeholder = "Gemini API Key...";
-            if (aiModelInput) aiModelInput.placeholder = "gemini-flash-latest";
-            if (aiModelHint) aiModelHint.textContent = "Default: gemini-flash-latest";
+            if (aiModelInput) {
+              aiModelInput.placeholder = "gemini-flash-latest";
+              aiModelInput.title = "Default: gemini-flash-latest";
+            }
           }
         });
       });
@@ -992,22 +999,22 @@
     }
 
     // Validate GitHub token (basic format check)
-    if (!tokenInput.value.startsWith("ghp_") && !tokenInput.value.startsWith("github_pat_")) {
+    const token = tokenInput.value.trim()
+    if (!token.startsWith("ghp_") && !token.startsWith("github_pat_")) {
       alert('Please enter a valid GitHub token. It should start with "ghp_" or "github_pat_".')
       return
     }
 
-    const repoUrlValue = repoUrlInput.value.replace(/\/$/, "");
+    const repoUrlValue = repoUrlInput.value.trim().replace(/\/$/, "");
     const repoUrl = repoUrlValue.endsWith(".git") ? repoUrlValue.slice(0, -4) : repoUrlValue;
-    const token = tokenInput.value
     const branch = "main" // Hardcoded to main
     const separateFolder = separateFolderInput.value
     const aiGenerate = aiGenerateInput ? aiGenerateInput.value : "yes"
-    const customDir = customDirInput?.value || ""
-    const apiKey = apiKeyInput?.value || ""
+    const customDir = (customDirInput?.value || "").trim()
+    const apiKey = (apiKeyInput?.value || "").trim()
     const aiProvider = aiProviderInput?.value || "gemini"
-    const aiPrompt = aiPromptInput?.value || ""
-    const aiModel = aiModelInput?.value || ""
+    const aiPrompt = (aiPromptInput?.value || "").trim()
+    const aiModel = (aiModelInput?.value || "").trim()
 
     // Save shortcut if provided
     if (shortcutModifierInput && shortcutKeyInput && shortcutKeyInput.value) {
@@ -1088,47 +1095,73 @@
   async function showConfigModal() {
     const modal = createConfigModal()
 
-    // Pre-fill with existing values if available
-    const data = await storageGet([
-      "token", "repo", "separate-folder", "ai-generate", "custom-dir", "api-key", "gemini-key", "ai-provider", "ai-prompt", "ai-model"
-    ]);
+    try {
+      // Pre-fill with existing values if available
+      const data = await storageGet([
+        "token", "repo", "separate-folder", "ai-generate", "custom-dir", "api-key", "gemini-key", "ai-provider", "ai-prompt", "ai-model"
+      ]);
 
-    const token = data["token"];
-    const repo = data["repo"];
-    const separateFolder = data["separate-folder"];
-    const aiGenerate = data["ai-generate"];
-    const customDir = data["custom-dir"];
-    const apiKey = data["api-key"] || data["gemini-key"]; // fallback
-    const aiProvider = data["ai-provider"] || "gemini";
-    const aiPrompt = data["ai-prompt"] || "";
-    const aiModel = data["ai-model"] || "";
+      const token = data["token"];
+      const repo = data["repo"];
+      const separateFolder = data["separate-folder"];
+      const aiGenerate = data["ai-generate"];
+      const customDir = data["custom-dir"];
+      const apiKey = data["api-key"] || data["gemini-key"]; // fallback
+      const aiProvider = data["ai-provider"] || "gemini";
+      const aiPrompt = data["ai-prompt"] || "";
+      const aiModel = data["ai-model"] || "";
 
-    // Pre-fill shortcut values
-    const shortcutModifierInput = modal.querySelector("#shortcut-modifier")
-    const shortcutKeyInput = modal.querySelector("#shortcut-key")
+      // Pre-fill shortcut values
+      const shortcutModifierInput = modal.querySelector("#shortcut-modifier")
+      const shortcutKeyInput = modal.querySelector("#shortcut-key")
 
-    if (shortcutModifierInput) {
-      shortcutModifierInput.value = KEYBOARD_SHORTCUT.modifier
-    }
-
-    if (shortcutKeyInput) {
-      shortcutKeyInput.value = KEYBOARD_SHORTCUT.key.toUpperCase()
-    }
-
-    if (token) modal.querySelector("#token").value = token
-    if (repo) modal.querySelector("#repo-url").value = repo
-    if (separateFolder) modal.querySelector(`#separate-folder-${separateFolder}`).checked = true
-    if (aiGenerate) modal.querySelector(`#ai-generate-${aiGenerate}`).checked = true
-    if (customDir) modal.querySelector("#custom-dir").value = customDir
-    if (apiKey) modal.querySelector("#api-key").value = apiKey
-    if (aiPrompt) modal.querySelector("#ai-prompt").value = aiPrompt
-    if (aiModel) modal.querySelector("#ai-model").value = aiModel
-    if (aiProvider) {
-      const providerRadio = modal.querySelector(`input[name="ai-provider"][value="${aiProvider}"]`);
-      if (providerRadio) {
-        providerRadio.checked = true;
-        providerRadio.dispatchEvent(new Event('change'));
+      if (shortcutModifierInput && KEYBOARD_SHORTCUT && KEYBOARD_SHORTCUT.modifier) {
+        shortcutModifierInput.value = KEYBOARD_SHORTCUT.modifier
       }
+
+      if (shortcutKeyInput && KEYBOARD_SHORTCUT && KEYBOARD_SHORTCUT.key) {
+        shortcutKeyInput.value = KEYBOARD_SHORTCUT.key.toUpperCase()
+      }
+
+      const tokenInput = modal.querySelector("#token");
+      if (tokenInput && token) tokenInput.value = token;
+
+      const repoInput = modal.querySelector("#repo-url");
+      if (repoInput && repo) repoInput.value = repo;
+
+      if (separateFolder !== undefined && separateFolder !== null) {
+        const sepVal = (separateFolder === true || separateFolder === "yes") ? "yes" : "no";
+        const sepRadio = modal.querySelector(`#separate-folder-${sepVal}`);
+        if (sepRadio) sepRadio.checked = true;
+      }
+
+      if (aiGenerate !== undefined && aiGenerate !== null) {
+        const genVal = (aiGenerate === false || aiGenerate === "no") ? "no" : "yes";
+        const genRadio = modal.querySelector(`#ai-generate-${genVal}`);
+        if (genRadio) genRadio.checked = true;
+      }
+
+      const customDirInput = modal.querySelector("#custom-dir");
+      if (customDirInput && customDir) customDirInput.value = customDir;
+
+      const apiKeyInput = modal.querySelector("#api-key");
+      if (apiKeyInput && apiKey) apiKeyInput.value = apiKey;
+
+      const aiPromptInput = modal.querySelector("#ai-prompt");
+      if (aiPromptInput && aiPrompt) aiPromptInput.value = aiPrompt;
+
+      const aiModelInput = modal.querySelector("#ai-model");
+      if (aiModelInput && aiModel) aiModelInput.value = aiModel;
+
+      if (aiProvider) {
+        const providerRadio = modal.querySelector(`input[name="ai-provider"][value="${aiProvider}"]`);
+        if (providerRadio) {
+          providerRadio.checked = true;
+          providerRadio.dispatchEvent(new Event('change'));
+        }
+      }
+    } catch (err) {
+      console.error("Error pre-filling config modal:", err);
     }
 
     document.body.appendChild(modal)
@@ -1199,28 +1232,45 @@
     }
 
     pushBtn.disabled = true
-    pushBtn.textContent = "Loading..."
-    pushBtn.classList.add("loading")
+    pushBtn.classList.add("loading", "stage-code")
+    pushBtn.textContent = "Pushing..."
 
     try {
       const result = await pushToGithub(
         userName,
         repoName,
         config,
-        problemInfo
+        problemInfo,
+        (stage) => {
+          pushBtn.classList.remove("stage-code", "stage-ai");
+          if (stage === "ai") {
+            pushBtn.classList.add("stage-ai");
+            pushBtn.textContent = "README...";
+          } else {
+            pushBtn.classList.add("stage-code");
+            pushBtn.textContent = "Pushing...";
+          }
+        }
       );
 
-      pushBtn.classList.remove("loading");
+      pushBtn.classList.remove("loading", "stage-code", "stage-ai");
       if (result && result.aiFailed) {
         pushBtn.classList.add("warning");
-        pushBtn.textContent = "Pushed (No AI)";
-        await sleep(3000);
+        pushBtn.textContent = "No AI";
+        pushBtn.title = result.aiError || "AI explanation generation failed";
+        await sleep(4000);
         pushBtn.classList.remove("warning");
-      } else {
+        pushBtn.title = "";
+      } else if (result && result.aiSkipped) {
         pushBtn.classList.add("success");
-        pushBtn.textContent = "Done";
-        await sleep(2000);
+        pushBtn.textContent = "Synced";
+        await sleep(2500);
         pushBtn.classList.remove("success");
+      } else {
+        pushBtn.classList.add("success-full");
+        pushBtn.textContent = "Synced";
+        await sleep(3000);
+        pushBtn.classList.remove("success-full");
       }
       pushBtn.disabled = false;
       pushBtn.textContent = "Push";
@@ -1328,7 +1378,8 @@
     userName,
     repoName,
     config,
-    problemInfo
+    problemInfo,
+    statusCallback = () => {}
   ) {
     try {
       const { fileName, flatFileName, readableName, solution, commitMsg, titleSlug, probName, probNum, descriptionHTML } = problemInfo;
@@ -1394,19 +1445,24 @@
       }
 
       // 4. Push the Code File
+      statusCallback("code");
       const codePushResult = await pushFileToRepo(userName, repoName, codeFilePath, targetBranch, solution, commitMsg, config.token)
 
       // 5. Generate and Push AI Explanation (if enabled)
       if (config.aiGenerate === "yes") {
         if (!codePushResult.changed) {
           console.log("Code file is identical to the repository. Skipping AI Explanation generation to save tokens.");
+          return { success: true, aiSkipped: true, aiFailed: false, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
         } else if (!config.apiKey && !config.geminiKey) {
           console.warn("AI Generation is enabled but no API Key is provided. Skipping README.md generation.");
+          return { success: true, aiSkipped: true, aiFailed: false, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
         } else {
           try {
+            statusCallback("ai");
             console.log("Generating AI Explanation...");
             const aiExplanation = await generateAIExplanation(solution, probName, config.apiKey, config.aiProvider, config.aiPrompt, config.aiModel);
             
+            statusCallback("code");
             // Combine Problem Description and AI Explanation
             const problemUrl = `https://leetcode.com/problems/${titleSlug}`;
             const fullReadmeContent = `<h2><a href="${problemUrl}">${probNum}. ${readableName}</a></h2>\n\n${descriptionHTML || "*Description not available*"}\n\n---\n\n${aiExplanation}`;
@@ -1418,12 +1474,12 @@
           } catch (e) {
             console.error("Failed to generate/push AI Explanation", e);
             // We don't throw here because the main code was already successfully pushed.
-            return { success: true, aiFailed: true, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
+            return { success: true, aiFailed: true, aiError: e.message || "Unknown AI error", githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
           }
         }
       }
 
-      return { success: true, aiFailed: false, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
+      return { success: true, aiFailed: false, aiSkipped: false, githubUrl: `https://github.com/${userName}/${repoName}/blob/${targetBranch}/${codeFilePath}` };
     } catch (error) {
       console.error("Error in pushToGithub:", error)
       throw error // Propagate the error to be handled by the caller
@@ -1719,7 +1775,7 @@ Here is my code solution:
 ${code}
 \`\`\`
 
-Please write a highly detailed, exhaustive explanation of this solution in Markdown format. DO NOT just give a high-level textbook summary. You must analyze the EXACT code provided.
+Please write a clear, well-structured explanation of this solution in Markdown format. Analyze the EXACT code provided, but keep it concise and readable - avoid overly wide lines or verbose inline code annotations.
 
 IMPORTANT INSTRUCTIONS FOR MULTIPLE APPROACHES:
 If you detect multiple different approaches in my code (e.g., an older brute-force approach commented out, and a newer optimized active approach), you MUST document ALL of them separately. 
@@ -1736,12 +1792,12 @@ Format it EXACTLY like this structure, using a professional, clear, conversation
 [Explain the core idea using a real-world analogy. Why does this approach work?]
 ### Algorithm Visualized
 \`\`\`mermaid
-[If applicable, create a Mermaid.js diagram (e.g., flowchart, state diagram, or graph) that visually maps out the algorithmic logic, pointer movements, or data structure transformations. Ensure the syntax is valid GitHub Mermaid markdown.]
+[Create a SMALL, SIMPLE Mermaid flowchart (max 5-7 nodes) showing only the high-level algorithm flow. Keep it minimal - one node per major step, NOT per line of code. SYNTAX RULES: 1) ALWAYS double-quote ALL node labels: A["label"]. 2) Keep labels under 6 words. 3) NO code, variables, brackets, parens, or special chars in labels. Example: A["Sort the array"] --> B["Scan for gaps"] --> C["Update counters"] --> D["Return best"]]
 \`\`\`
 ### Approach
 [Step-by-step algorithmic breakdown. High level logic flow.]
 ### Detailed Code Analysis
-[Deep dive into the code block. Explain EXACTLY what the code is doing line-by-line or block-by-block. Explain why specific data structures were chosen and map the algorithmic steps directly to the code.]
+[Explain the code in 3-5 concise paragraphs grouped by logical blocks (NOT line-by-line). Describe what each block does and WHY. Do NOT reproduce the full code with inline comments - just reference key lines or variables. Keep it readable and avoid overly wide formatting.]
 ### Code
 \`\`\`[language_name]
 [Insert the specific, clean code snippet for this approach here]
@@ -1760,45 +1816,54 @@ CONSTRAINTS:
 - OUTPUT ONLY THE RAW MARKDOWN. 
 - DO NOT wrap your response in an overarching markdown code block.
 - DO NOT include any conversational filler (e.g., "Here is the explanation..."). Start immediately with the title heading.
+- In Mermaid diagrams, ALWAYS quote every node label with double quotes: A["label"] not A[label]. Never put brackets, parens, equals, commas, or angle brackets inside unquoted labels.
 `;
+
+    const trimmedModel = (customModel || "").trim();
+    const cleanApiKey = (apiKey || "").trim();
 
     try {
       if (aiProvider === "groq") {
+        const groqModel = trimmedModel || "openai/gpt-oss-120b";
         const response = await fetchViaProxy(`https://api.groq.com/openai/v1/chat/completions`, {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${apiKey}`,
+            "Authorization": `Bearer ${cleanApiKey}`,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: customModel || "openai/gpt-oss-120b",
+            model: groqModel,
             messages: [{ role: "user", content: prompt }]
           })
         });
         const data = await response.json();
-        if (data.error) throw new Error(data.error.message);
+        if (data.error) throw new Error(data.error.message || (typeof data.error === "string" ? data.error : JSON.stringify(data.error)));
         return data.choices?.[0]?.message?.content || "Failed to generate explanation.";
       } else if (aiProvider === "claude") {
+        const claudeModel = trimmedModel || "claude-3-5-sonnet-20241022";
         const response = await fetchViaProxy(`https://api.anthropic.com/v1/messages`, {
           method: "POST",
           headers: {
-            "x-api-key": apiKey,
+            "x-api-key": cleanApiKey,
             "anthropic-version": "2023-06-01",
             "content-type": "application/json",
             "anthropic-dangerous-direct-browser-access": "true"
           },
           body: JSON.stringify({
-            model: customModel || "claude-3-5-sonnet-20241022",
+            model: claudeModel,
             max_tokens: 4000,
             messages: [{ role: "user", content: prompt }]
           })
         });
         const data = await response.json();
-        if (data.error) throw new Error(data.error.message);
+        if (data.error) throw new Error(data.error.message || (typeof data.error === "string" ? data.error : JSON.stringify(data.error)));
         return data.content?.[0]?.text || "Failed to generate explanation.";
       } else {
-        const geminiModel = customModel || "gemini-flash-latest";
-        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`, {
+        let geminiModel = trimmedModel || "gemini-flash-latest";
+        if (geminiModel.startsWith("models/")) {
+          geminiModel = geminiModel.replace(/^models\//, "");
+        }
+        const response = await fetchViaProxy(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${cleanApiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -1806,7 +1871,7 @@ CONSTRAINTS:
           })
         });
         const data = await response.json();
-        if (data.error) throw new Error(data.error.message);
+        if (data.error) throw new Error(data.error.message || (typeof data.error === "string" ? data.error : JSON.stringify(data.error)));
         return data.candidates?.[0]?.content?.parts?.[0]?.text || "Failed to generate explanation.";
       }
     } catch (e) {

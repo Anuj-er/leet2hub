@@ -72,6 +72,14 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* Fixed width for push buttons only */
+#leet2hub-btn,
+#leet2hub-btn-CodeEditor {
+  min-width: 72px;
+  justify-content: center;
 }
 
 /* Edit button colors */
@@ -133,10 +141,41 @@
 }
 
 /* Different states for buttons */
+#leet2hub-btn.loading,
+#leet2hub-btn-CodeEditor.loading {
+  pointer-events: none;
+}
+
 #leet2hub-btn.loading::before,
 #leet2hub-btn-CodeEditor.loading::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffa116'%3E%3Cpath d='M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='1s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
   display: inline-block;
+}
+
+/* Loading sub-states: code pushing vs README generating */
+#leet2hub-btn.loading.stage-code,
+#leet2hub-btn-CodeEditor.loading.stage-code {
+  animation: l2h-pulse 1.5s ease-in-out infinite;
+}
+
+#leet2hub-btn.loading.stage-ai,
+#leet2hub-btn-CodeEditor.loading.stage-ai {
+  animation: l2h-pulse-ai 1.8s ease-in-out infinite;
+}
+
+#leet2hub-btn.loading.stage-ai::before,
+#leet2hub-btn-CodeEditor.loading.stage-ai::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'%3E%3Cpath d='M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='0.8s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
+}
+
+@keyframes l2h-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes l2h-pulse-ai {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 #leet2hub-btn.error::before,
@@ -145,16 +184,22 @@
   display: inline-block;
 }
 
-/* Warning state (Partial success) */
+/* Warning state - AI failed but code pushed */
 #leet2hub-btn.warning,
 #leet2hub-btn-CodeEditor.warning {
   position: relative;
   color: #ffa116;
+  animation: l2h-warning-flash 0.6s ease-in-out 2;
+}
+
+@keyframes l2h-warning-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 #leet2hub-btn.warning::before,
 #leet2hub-btn-CodeEditor.warning::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffa116'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'%3E%3C/path%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffa116'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
   display: inline-block;
 }
 
@@ -163,24 +208,72 @@
   display: none;
 }
 
-
-/* Success state with checkmark on the right */
+/* Success state - everything pushed */
 #leet2hub-btn.success,
 #leet2hub-btn-CodeEditor.success {
   position: relative;
   color: #2ecc71;
+  animation: l2h-success-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes l2h-success-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 #leet2hub-btn.success::before,
 #leet2hub-btn-CodeEditor.success::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='%232ecc71'%3E%3Cpath d='M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z'%3E%3C/path%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232ecc71'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
   display: inline-block;
+  animation: l2h-check-draw 0.4s ease-out 0.1s both;
+}
+
+@keyframes l2h-check-draw {
+  0% { opacity: 0; transform: scale(0.3) rotate(-45deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Success with README - green GitHub icon with glow */
+#leet2hub-btn.success-full,
+#leet2hub-btn-CodeEditor.success-full {
+  position: relative;
+  color: #2ecc71;
+  animation: l2h-success-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+#leet2hub-btn.success-full::before,
+#leet2hub-btn-CodeEditor.success-full::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232ecc71'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
+  display: inline-block;
+  animation: l2h-check-draw 0.4s ease-out 0.1s both;
+}
+
+#leet2hub-btn.success-full::after,
+#leet2hub-btn-CodeEditor.success-full::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 8px;
+  border: 1.5px solid #2ecc71;
+  opacity: 0;
+  animation: l2h-glow-ring 1.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes l2h-glow-ring {
+  0% { opacity: 0.8; transform: scale(0.95); box-shadow: 0 0 8px rgba(46, 204, 113, 0.5); }
+  50% { opacity: 0.4; transform: scale(1.02); box-shadow: 0 0 12px rgba(46, 204, 113, 0.3); }
+  100% { opacity: 0; transform: scale(1.05); box-shadow: 0 0 0 rgba(46, 204, 113, 0); }
 }
 
 #leet2hub-btn.success::after,
 #leet2hub-btn-CodeEditor.success::after {
   display: none;
 }
+
+/* Floating status tooltip */
+
 
 /** Leet2Hub Modal **/
 #lp-modal {
@@ -271,25 +364,6 @@
   color: #ffa116;
 }
 
-.ai-settings-grid {
-  display: grid;
-  grid-template-columns: 170px 1fr;
-  grid-template-rows: auto auto;
-  gap: 1rem 1.5rem;
-  margin-top: 8px;
-  position: relative;
-}
-
-.ai-settings-grid::before {
-  content: "";
-  position: absolute;
-  left: calc(170px + 0.75rem);
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
 #lp-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -349,13 +423,13 @@
   box-shadow: 0 0 0 2px #ffa116;
 }
 
-.lp-div:nth-child(2) label {
+.lp-label-with-link {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.lp-div:nth-child(2) label a,
+.lp-label-with-link a,
 .lp-div:nth-child(5) label a {
   font-size: 10px;
   text-decoration: underline;
